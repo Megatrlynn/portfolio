@@ -1,0 +1,40 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.env.*
+!.env.example
+
+# Firebase service-account credentials
+*-firebase-adminsdk-*.json
+serviceAccountKey*.json
+firebase-debug.log*
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Local planning/generation docs (not for GitHub)
+FIGMA_AI_PROMPT_PACK.md
+FIGMA_COMPONENT_PIXEL_SPEC.md
+FIGMA_DESIGN_SPEC.md
+DESIGN_QA_CHECKLIST.md
+PROJECT_DATA_VAULT.md
+ARTICLES_DATA_VAULT.md
