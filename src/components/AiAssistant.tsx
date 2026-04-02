@@ -1,6 +1,11 @@
 import { useState, useRef, useEffect, type FormEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiMessageCircle, FiX, FiSend, FiCpu } from 'react-icons/fi';
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase';
+import { GoogleGenAI } from '@google/genai';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface Message {
   id: string;
@@ -29,41 +34,62 @@ const AiAssistant = () => {
     scrollToBottom();
   }, [messages, isTyping]);
 
-  const generateResponse = (userInput: string) => {
-    const lowerInput = userInput.toLowerCase();
-    
-    if (lowerInput.includes('hardware') || lowerInput.includes('iot') || lowerInput.includes('esp32') || lowerInput.includes('raspberry')) {
-      return "Awesome! Hardware is Terachad's forte! Check out his 'VitalTrack Mobility System' and 'Voice-Controlled Robotic Hand' projects. He's a master with C++, Python, and microcontrollers like ESP32 and Raspberry Pi.";
-    }
-    
-    if (lowerInput.includes('security') || lowerInput.includes('cyber') || lowerInput.includes('network') || lowerInput.includes('wazuh')) {
-      return "Cybersecurity enthusiast? Perfect! You'll love his 'Smart Home Network Monitor' project. He has hands-on expertise with anomaly detection, Wazuh, and network security. Technical prowess at its finest!";
-    }
+  const generateResponse = async (userInput: string) => {
+    try {
+      let cvUrl = '';
+      const cvDoc = await getDoc(doc(db, 'settings', 'cv'));
+      if (cvDoc.exists()) {
+        const data = cvDoc.data() as { url?: string };
+        cvUrl = data.url || '';
+      }
 
-    if (lowerInput.includes('software') || lowerInput.includes('web') || lowerInput.includes('react') || lowerInput.includes('frontend')) {
-      return "Software development is where Terachad shines! He builds stunning, responsive applications with React, TypeScript, and Tailwind CSS. In fact, this portfolio you're exploring right now? He built it with those exact technologies!";
-    }
+      const projectsSnapshot = await getDocs(collection(db, 'projects'));
+      const projectsData: any[] = [];
+      projectsSnapshot.forEach((doc) => {
+        const d = doc.data();
+        projectsData.push({
+          title: d.title,
+          description: d.description,
+          fullDescription: d.fullDescription,
+          tech: d.tech || [],
+          features: d.features || [],
+          challenges: d.challenges || [],
+          outcomes: d.outcomes || [],
+          role: d.role,
+          duration: d.duration,
+          status: d.status,
+          link: d.link,
+          demoUrl: d.demoUrl,
+          repoUrl: d.repoUrl,
+          updatedAt: d.updatedAt ? d.updatedAt.toDate?.()?.toISOString() : undefined,
+        });
+      });
 
-    if (lowerInput.includes('contact') || lowerInput.includes('hire') || lowerInput.includes('email')) {
-      return "Great choice! Scroll down to the Contact section to reach out directly. Your message will go straight to his secure database, and he'll get back to you promptly!";
-    }
+      const systemPrompt = `You are the AI Assistant for Raymond [Terachad]. Your goal is to accurately enthusiastically and cheerfully answer questions about him, his portfolio, his skills, and his projects.
+Here is the link to his CV: ${cvUrl}
 
-    if (lowerInput.includes('skills') || lowerInput.includes('experience') || lowerInput.includes('resume') || lowerInput.includes('about')) {
-      return "Want to learn more? Head to the About section to see his full resume and skill breakdown. You'll find his tech stack, certifications, and professional journey there!";
-    }
+Here are his projects:
+${JSON.stringify(projectsData, null, 2)}
 
-    if (lowerInput.includes('project') || lowerInput.includes('portfolio') || lowerInput.includes('work')) {
-      return "Check out the Projects section! Terachad has built some incredible things across hardware, software, and cybersecurity. Each project showcases his innovation and technical depth.";
-    }
+Please provide a helpful, engaging, and professional response to the user's question using the information above. Use Markdown formatting (e.g. bold text, bullet points with emojis instead of standard bullets) to make your response highly readable, structured, and visually appealing. Always refer to him as Raymond [Terachad]. If the question is about his CV, mention the CV URL. If the question is about his projects, summarize or describe the relevant projects from the data. Please do not print out raw JSON. Keep answers concise.`;
 
-    if (lowerInput.includes('blog') || lowerInput.includes('article') || lowerInput.includes('write')) {
-      return "Terachad shares his knowledge through blog posts! Visit the Blog section to read about his insights on technology, software design, and engineering best practices.";
-    }
+      // Use @google/genai SDK
+      const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
+      const response = await ai.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: [
+          { role: 'user', parts: [{ text: systemPrompt + '\n\nUser Question: ' + userInput }] }
+        ],
+      });
 
-    return "That's an interesting question! While I'm just a specialized AI guide, I can tell you Terachad is a versatile ICT professional constantly pushing boundaries. Browse around to explore all his amazing work!";
+      return response.text || "I'm sorry, I couldn't generate a response at this time.";
+    } catch (error) {
+      console.error('Error generating AI response:', error);
+      return "I encountered an error trying to process your request. Please try again later.";
+    }
   };
 
-  const handleSendMessage = (e: FormEvent) => {
+  const handleSendMessage = async (e: FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
 
@@ -72,12 +98,10 @@ const AiAssistant = () => {
     setInput('');
     setIsTyping(true);
 
-    setTimeout(() => {
-      const aiResponseText = generateResponse(userMsg.text);
-      const aiMsg: Message = { id: (Date.now() + 1).toString(), sender: 'ai', text: aiResponseText };
-      setMessages(prev => [...prev, aiMsg]);
-      setIsTyping(false);
-    }, 1500);
+    const aiResponseText = await generateResponse(userMsg.text);
+    const aiMsg: Message = { id: (Date.now() + 1).toString(), sender: 'ai', text: aiResponseText };
+    setMessages(prev => [...prev, aiMsg]);
+    setIsTyping(false);
   };
 
   const suggestedQuestions = [
@@ -207,7 +231,21 @@ const AiAssistant = () => {
                         className="max-w-xs px-4 py-3 rounded-2xl rounded-tl-none bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 border border-gray-200/50 dark:border-gray-700/50 shadow-sm"
                         layout
                       >
-                        <p className="text-sm leading-relaxed text-gray-900 dark:text-white">{msg.text}</p>
+                        <div className="text-sm leading-relaxed text-gray-900 dark:text-white ReactMarkdown-container">
+                          <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                              p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
+                              ul: ({node, ...props}) => <ul className="mb-2 space-y-1 list-inside" {...props} />,
+                              ol: ({node, ...props}) => <ol className="mb-2 space-y-1 list-decimal list-inside" {...props} />,
+                              li: ({node, ...props}) => <li className="pl-1" {...props} />,
+                              strong: ({node, ...props}) => <strong className="font-semibold text-blue-700 dark:text-blue-400" {...props} />,
+                              a: ({node, ...props}) => <a className="text-blue-600 dark:text-blue-400 hover:underline break-all" target="_blank" rel="noopener noreferrer" {...props} />
+                            }}
+                          >
+                            {msg.text}
+                          </ReactMarkdown>
+                        </div>
                       </motion.div>
                     </motion.div>
                   ) : (
