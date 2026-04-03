@@ -90,7 +90,7 @@ const Hero = () => {
             whileHover={{ scale: 1.05 }}
           >
             <span className="text-sm font-medium bg-linear-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
-              ✨ Welcome to my portfolio
+              🔥 Welcome to TitanForge [My Personal Portfolio]
             </span>
           </motion.div>
         </motion.div>
@@ -128,9 +128,9 @@ const Hero = () => {
           variants={itemVariants}
           className="text-xl md:text-2xl lg:text-3xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-2xl mx-auto"
         >
-          Building innovative solutions with{' '}
+          Forging Software, Hardware, and Intelligence with{' '}
           <span className="font-semibold bg-linear-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
-            Software & Embedded Systems, ML, Network Architecture Implementation, and IoT.
+            Full-Stack Development, Embedded Systems, AI, Networking, and IoT.
           </span>
         </motion.p>
 

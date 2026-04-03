@@ -206,11 +206,54 @@ const Navbar = () => {
               className="shrink-0"
             >
               <div className="relative group cursor-pointer">
-                <div className="absolute -inset-1 bg-linear-to-r from-blue-600 via-purple-600 to-pink-600 rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-500"></div>
-                <div className="relative px-3 py-2 bg-white dark:bg-gray-950 rounded-lg">
-                  <span className="font-bold text-2xl bg-linear-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                    Personal Portfolio
-                  </span>
+                <div className="absolute -inset-1 bg-linear-to-r from-orange-500/60 via-amber-400/60 to-blue-500/60 rounded-xl blur opacity-60 group-hover:opacity-90 transition duration-500"></div>
+                <div className="relative px-3 py-2.5 bg-white dark:bg-gray-950 rounded-xl border border-gray-200/60 dark:border-gray-800/60 overflow-hidden">
+                  <motion.div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 bg-linear-to-r from-transparent via-orange-300/70 to-transparent dark:via-amber-300/40"
+                    initial={{ x: '-180%' }}
+                    animate={{ x: ['-180%', '460%'] }}
+                    transition={{ duration: 4.8, ease: 'linear', repeat: Infinity }}
+                  />
+
+                  <div className="relative z-10 flex items-center gap-2">
+                    <motion.div
+                      initial={{ scale: 0.85, opacity: 0, rotate: -8 }}
+                      animate={{ scale: [1, 1.018], opacity: 1, rotate: [0, -1] }}
+                      transition={{ duration: 3.2, delay: 0.1, ease: 'easeInOut', repeat: Infinity, repeatType: 'mirror' }}
+                      className="grid h-8 w-8 place-items-center rounded-lg bg-linear-to-br from-orange-500 to-amber-500 text-white shadow-md"
+                    >
+                      <span className="text-[11px] font-extrabold tracking-wide">TF</span>
+                    </motion.div>
+
+                    <div className="leading-none">
+                      <motion.span
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                        className="block font-black text-lg sm:text-xl tracking-tight"
+                      >
+                        <motion.span
+                          className="bg-clip-text text-transparent"
+                          style={{
+                            backgroundImage: 'linear-gradient(115deg, #f97316, #f59e0b, #ef4444, #f59e0b, #f97316)',
+                            backgroundSize: '220% 220%',
+                          }}
+                          animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
+                          transition={{ duration: 7.5, ease: 'linear', repeat: Infinity }}
+                        >
+                          TitanForge
+                        </motion.span>
+                      </motion.span>
+                      <motion.span
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.45, delay: 0.3 }}
+                        className="block text-[10px] uppercase tracking-[0.18em] text-gray-600 dark:text-gray-400"
+                      >
+                      </motion.span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>

@@ -89,10 +89,10 @@ const Footer = () => {
           {/* Brand Section */}
           <motion.div variants={itemVariants} className="lg:col-span-1">
             <h3 className="text-xl font-black bg-linear-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent mb-3">
-              Personal Portfolio
+              TitanForge
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-              Building exceptional digital experiences with modern technologies and innovative design.
+              Forging Software, Hardware, and Intelligence through modern engineering and design.
             </p>
           </motion.div>
 
