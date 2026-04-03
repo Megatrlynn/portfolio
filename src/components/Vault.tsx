@@ -1,4 +1,5 @@
 import { useState, useEffect, type FormEvent } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { collection, getDocs, addDoc, query, orderBy, doc, getDoc, setDoc, deleteDoc, updateDoc } from 'firebase/firestore';
@@ -58,6 +59,31 @@ const toStringArray = (value: string): string[] =>
     .map((item) => item.trim())
     .filter((item) => item !== '');
 
+const toDisplayArray = (value: unknown): string[] => {
+  if (Array.isArray(value)) {
+    return value.map((item) => String(item).trim()).filter((item) => item !== '');
+  }
+
+  if (typeof value === 'string') {
+    return value
+      .split(',')
+      .map((item) => item.trim())
+      .filter((item) => item !== '');
+  }
+
+  return [];
+};
+
+const toPreviewText = (value: unknown, maxLength = 180): string => {
+  const text = typeof value === 'string' ? value.trim() : '';
+
+  if (!text) {
+    return '';
+  }
+
+  return text.length > maxLength ? `${text.slice(0, maxLength).trimEnd()}…` : text;
+};
+
 const Vault = () => {
   const env = import.meta.env as Record<string, string | undefined>;
   const imgbbApiKey = env.VITE_IMGBB_API_KEY ?? env.IMGBB_API_KEY ?? '';
@@ -88,6 +114,7 @@ const Vault = () => {
   const [projectStatus, setProjectStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [projectImageFile, setProjectImageFile] = useState<File | null>(null);
   const [projectErrorMessage, setProjectErrorMessage] = useState('');
+  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
 
   const [blogData, setBlogData] = useState({
     title: '',
@@ -105,6 +132,7 @@ const Vault = () => {
   const [blogStatus, setBlogStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [blogImageFile, setBlogImageFile] = useState<File | null>(null);
   const [blogErrorMessage, setBlogErrorMessage] = useState('');
+  const [isArticleModalOpen, setIsArticleModalOpen] = useState(false);
 
   const [currentCvUrl, setCurrentCvUrl] = useState('');
   const [currentCvName, setCurrentCvName] = useState('');
@@ -468,7 +496,9 @@ const Vault = () => {
         link: project.link,
       });
       setEditingProjectId(projectId);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setProjectErrorMessage('');
+      setProjectStatus('idle');
+      setIsProjectModalOpen(true);
     }
   };
 
@@ -530,6 +560,7 @@ const Vault = () => {
         repoUrl: '',
         link: '',
       });
+      setIsProjectModalOpen(false);
       setTimeout(() => setProjectStatus('idle'), 3000);
       await fetchProjects();
     } catch (error) {
@@ -567,7 +598,9 @@ const Vault = () => {
         referenceLinks: toCsvString(article.referenceLinks),
       });
       setEditingArticleId(articleId);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setBlogErrorMessage('');
+      setBlogStatus('idle');
+      setIsArticleModalOpen(true);
     }
   };
 
@@ -621,6 +654,7 @@ const Vault = () => {
         keyTakeaways: '',
         referenceLinks: '',
       });
+      setIsArticleModalOpen(false);
       setTimeout(() => setBlogStatus('idle'), 3000);
       await fetchArticles();
     } catch (error) {
@@ -660,6 +694,20 @@ const Vault = () => {
     setProjectImageFile(null);
   };
 
+  const openNewProjectModal = () => {
+    cancelEditProject();
+    setProjectErrorMessage('');
+    setProjectStatus('idle');
+    setIsProjectModalOpen(true);
+  };
+
+  const closeProjectModal = () => {
+    setIsProjectModalOpen(false);
+    cancelEditProject();
+    setProjectErrorMessage('');
+    setProjectStatus('idle');
+  };
+
   const cancelEditArticle = () => {
     setEditingArticleId(null);
     setBlogData({
@@ -676,6 +724,20 @@ const Vault = () => {
       referenceLinks: '',
     });
     setBlogImageFile(null);
+  };
+
+  const openNewArticleModal = () => {
+    cancelEditArticle();
+    setBlogErrorMessage('');
+    setBlogStatus('idle');
+    setIsArticleModalOpen(true);
+  };
+
+  const closeArticleModal = () => {
+    setIsArticleModalOpen(false);
+    cancelEditArticle();
+    setBlogErrorMessage('');
+    setBlogStatus('idle');
   };
 
   if (loading) {
@@ -910,6 +972,19 @@ const Vault = () => {
                   transition={{ duration: 0.25 }}
                   className="space-y-6"
                 >
+                  <div className="flex flex-wrap items-center justify-end gap-3">
+                    <motion.button
+                      type="button"
+                      onClick={openNewProjectModal}
+                      whileHover={{ y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:bg-blue-700 cursor-pointer"
+                    >
+                      <FiBriefcase className="w-4 h-4" />
+                      New Project
+                    </motion.button>
+                  </div>
+
                   {projectsLoading ? (
                     <div className="text-center py-8">
                       <p className="text-gray-500 dark:text-gray-400">Loading projects...</p>
@@ -919,47 +994,114 @@ const Vault = () => {
                       {projects.length > 0 && (
                         <div className="space-y-4">
                           <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Existing Projects</h3>
-                          <div className="grid gap-3">
+                          <div className="grid gap-4 xl:grid-cols-2">
                             {projects.map((project, index) => (
                               <motion.div
                                 key={project.id}
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.05 }}
-                                className="rounded-lg border border-gray-200/70 dark:border-gray-700/70 bg-linear-to-br from-blue-50/50 to-transparent dark:from-blue-900/10 p-4 shadow-sm hover:shadow-md transition"
+                                whileHover={{ y: -4 }}
+                                className="group overflow-hidden rounded-3xl border border-gray-200/70 dark:border-gray-700/70 bg-white/90 dark:bg-gray-900/80 shadow-lg hover:shadow-2xl transition-all"
                               >
-                                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                                  <div className="flex-1">
-                                    <h4 className="font-semibold text-gray-900 dark:text-white">{project.title}</h4>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{project.description}</p>
-                                    <div className="flex flex-wrap gap-2 mt-2">
-                                      <span className="text-xs px-2 py-1 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300">
-                                        {project.status}
-                                      </span>
-                                      <span className="text-xs px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
-                                        {project.tech}
-                                      </span>
+                                <div className="grid xl:grid-cols-[280px,1fr]">
+                                  <div className="relative min-h-60 overflow-hidden bg-slate-900">
+                                    {project.imageUrl ? (
+                                      <img
+                                        src={project.imageUrl}
+                                        alt={project.title}
+                                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                                        loading="lazy"
+                                      />
+                                    ) : (
+                                      <div className="absolute inset-0 bg-linear-to-br from-blue-600 via-indigo-600 to-cyan-500" />
+                                    )}
+                                    <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/20 to-transparent" />
+                                    <div className="absolute inset-x-0 bottom-0 p-5 text-white">
+                                      <div className="flex flex-wrap items-center gap-2">
+                                        <span className="inline-flex items-center gap-1 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold backdrop-blur-sm">
+                                          <FiBriefcase className="h-3.5 w-3.5" />
+                                          Project
+                                        </span>
+                                        <span className="rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-semibold text-emerald-100 backdrop-blur-sm">
+                                          {project.status}
+                                        </span>
+                                      </div>
+                                      <p className="mt-3 text-sm text-white/80">{project.role || 'Portfolio project'}</p>
                                     </div>
                                   </div>
-                                  <div className="flex gap-2">
-                                    <motion.button
-                                      onClick={() => handleEditProject(project.id)}
-                                      whileHover={{ scale: 1.05 }}
-                                      whileTap={{ scale: 0.95 }}
-                                      className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 transition cursor-pointer"
-                                    >
-                                      <FiEdit3 className="w-4 h-4" />
-                                      Edit
-                                    </motion.button>
-                                    <motion.button
-                                      onClick={() => setDeleteProjectConfirm(project.id)}
-                                      whileHover={{ scale: 1.05 }}
-                                      whileTap={{ scale: 0.95 }}
-                                      className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium bg-red-100 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-900/50 text-red-700 dark:text-red-300 transition cursor-pointer"
-                                    >
-                                      <FiTrash2 className="w-4 h-4" />
-                                      Delete
-                                    </motion.button>
+
+                                  <div className="flex flex-col gap-5 p-5 md:p-6">
+                                    <div>
+                                      <div className="flex flex-wrap items-start justify-between gap-3">
+                                        <div>
+                                          <h4 className="text-xl font-bold text-gray-900 dark:text-white">{project.title}</h4>
+                                          <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">
+                                            {toPreviewText(project.description || project.fullDescription, 220)}
+                                          </p>
+                                        </div>
+                                      </div>
+
+                                      <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                                        <div className="rounded-2xl border border-gray-200/70 dark:border-gray-700/70 bg-gray-50/80 dark:bg-gray-800/50 px-4 py-3">
+                                          <p className="text-[11px] uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">Role</p>
+                                          <p className="mt-1 text-sm font-semibold text-gray-900 dark:text-white">{project.role || 'Not specified'}</p>
+                                        </div>
+                                        <div className="rounded-2xl border border-gray-200/70 dark:border-gray-700/70 bg-gray-50/80 dark:bg-gray-800/50 px-4 py-3">
+                                          <p className="text-[11px] uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">Duration</p>
+                                          <p className="mt-1 text-sm font-semibold text-gray-900 dark:text-white">{project.duration || 'Not specified'}</p>
+                                        </div>
+                                        <div className="rounded-2xl border border-gray-200/70 dark:border-gray-700/70 bg-gray-50/80 dark:bg-gray-800/50 px-4 py-3">
+                                          <p className="text-[11px] uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">Tech Stack</p>
+                                          <p className="mt-1 text-sm font-semibold text-gray-900 dark:text-white">{toDisplayArray(project.tech).slice(0, 2).join(' • ') || 'Not specified'}</p>
+                                        </div>
+                                      </div>
+
+                                      <div className="mt-4 flex flex-wrap gap-2">
+                                        {toDisplayArray(project.tech).slice(0, 4).map((tech) => (
+                                          <span
+                                            key={`${project.id}-${tech}`}
+                                            className="inline-flex items-center rounded-full border border-blue-200/70 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 dark:border-blue-800/40 dark:bg-blue-900/25 dark:text-blue-200"
+                                          >
+                                            {tech}
+                                          </span>
+                                        ))}
+                                      </div>
+                                    </div>
+
+                                    <div className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-200/70 dark:border-gray-700/70 pt-4">
+                                      <div className="flex flex-wrap gap-2">
+                                        <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold text-purple-700 dark:bg-purple-900/30 dark:text-purple-200">
+                                          {project.status}
+                                        </span>
+                                        {project.link && (
+                                          <span className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+                                            Live link ready
+                                          </span>
+                                        )}
+                                      </div>
+
+                                      <div className="flex gap-2">
+                                        <motion.button
+                                          onClick={() => handleEditProject(project.id)}
+                                          whileHover={{ scale: 1.03 }}
+                                          whileTap={{ scale: 0.97 }}
+                                          className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 cursor-pointer"
+                                        >
+                                          <FiEdit3 className="w-4 h-4" />
+                                          Edit
+                                        </motion.button>
+                                        <motion.button
+                                          onClick={() => setDeleteProjectConfirm(project.id)}
+                                          whileHover={{ scale: 1.03 }}
+                                          whileTap={{ scale: 0.97 }}
+                                          className="inline-flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-700 transition hover:bg-red-100 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-200 dark:hover:bg-red-900/30 cursor-pointer"
+                                        >
+                                          <FiTrash2 className="w-4 h-4" />
+                                          Delete
+                                        </motion.button>
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
                               </motion.div>
@@ -970,19 +1112,50 @@ const Vault = () => {
                     </>
                   )}
 
-                  <div className="border-t border-gray-200/70 dark:border-gray-700/70 pt-6 mt-6">
-                    <h2 className="text-2xl font-bold mb-6 inline-flex items-center gap-2">
-                      <FiBriefcase className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                      {editingProjectId ? 'Edit Project' : 'Publish New Project'}
-                    </h2>
-                    {editingProjectId && (
-                      <div className="mb-4 p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200/70 dark:border-blue-700/40">
-                        <p className="text-sm text-blue-700 dark:text-blue-300">
-                          You are editing a project. Changes will update the existing data.
-                        </p>
-                      </div>
-                    )}
-                    <form onSubmit={editingProjectId ? handleUpdateProject : handleAddProject} className="max-w-3xl space-y-4">
+                  {typeof document !== 'undefined' &&
+                    createPortal(
+                      <AnimatePresence>
+                        {isProjectModalOpen && (
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/60 p-4 sm:p-6"
+                            onClick={closeProjectModal}
+                          >
+                            <motion.div
+                              initial={{ scale: 0.96, opacity: 0, y: 16 }}
+                              animate={{ scale: 1, opacity: 1, y: 0 }}
+                              exit={{ scale: 0.96, opacity: 0, y: 16 }}
+                              transition={{ duration: 0.2 }}
+                              onClick={(e) => e.stopPropagation()}
+                              className="relative my-8 w-full max-w-5xl overflow-hidden rounded-3xl border border-gray-200/70 dark:border-gray-700/70 bg-white/95 dark:bg-gray-950/95 shadow-2xl"
+                            >
+                              <div className="max-h-[85vh] overflow-y-auto p-6 md:p-8">
+                                <div className="flex items-start justify-between gap-4 mb-6">
+                                  <h2 className="text-2xl font-bold inline-flex items-center gap-2">
+                                    <FiBriefcase className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                                    {editingProjectId ? 'Edit Project' : 'Publish New Project'}
+                                  </h2>
+                                  <motion.button
+                                    type="button"
+                                    onClick={closeProjectModal}
+                                    whileHover={{ scale: 1.03 }}
+                                    whileTap={{ scale: 0.97 }}
+                                    className="inline-flex items-center justify-center rounded-xl border border-gray-200 bg-gray-100 px-3 py-2 text-gray-700 transition hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 cursor-pointer"
+                                    aria-label="Close project form"
+                                  >
+                                    <FiX className="w-4 h-4" />
+                                  </motion.button>
+                                </div>
+                                {editingProjectId && (
+                                  <div className="mb-4 p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200/70 dark:border-blue-700/40">
+                                    <p className="text-sm text-blue-700 dark:text-blue-300">
+                                      You are editing a project. Changes will update the existing data.
+                                    </p>
+                                  </div>
+                                )}
+                                <form onSubmit={editingProjectId ? handleUpdateProject : handleAddProject} className="max-w-3xl space-y-4">
                     <div>
                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Project Image {!editingProjectId && <span className="text-red-500">*</span>}</label>
                       <input
@@ -1175,8 +1348,14 @@ const Vault = () => {
                         </span>
                       )}
                     </div>
-                  </form>
-                  </div>
+                                </form>
+                              </div>
+                            </motion.div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>,
+                      document.body,
+                    )}
 
                   <AnimatePresence>
                     {deleteProjectConfirm && (
@@ -1239,6 +1418,19 @@ const Vault = () => {
                   transition={{ duration: 0.25 }}
                   className="space-y-6"
                 >
+                  <div className="flex flex-wrap items-center justify-end gap-3">
+                    <motion.button
+                      type="button"
+                      onClick={openNewArticleModal}
+                      whileHover={{ y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="inline-flex items-center gap-2 rounded-xl bg-pink-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:bg-pink-700 cursor-pointer"
+                    >
+                      <FiEdit3 className="w-4 h-4" />
+                      New Article
+                    </motion.button>
+                  </div>
+
                   {articlesLoading ? (
                     <div className="text-center py-8">
                       <p className="text-gray-500 dark:text-gray-400">Loading articles...</p>
@@ -1248,50 +1440,112 @@ const Vault = () => {
                       {articles.length > 0 && (
                         <div className="space-y-4">
                           <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Existing Articles</h3>
-                          <div className="grid gap-3">
+                          <div className="grid gap-4 xl:grid-cols-2">
                             {articles.map((article, index) => (
                               <motion.div
                                 key={article.id}
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.05 }}
-                                className="rounded-lg border border-gray-200/70 dark:border-gray-700/70 bg-linear-to-br from-pink-50/50 to-transparent dark:from-pink-900/10 p-4 shadow-sm hover:shadow-md transition"
+                                whileHover={{ y: -4 }}
+                                className="group overflow-hidden rounded-3xl border border-gray-200/70 dark:border-gray-700/70 bg-white/90 dark:bg-gray-900/80 shadow-lg hover:shadow-2xl transition-all"
                               >
-                                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                                  <div className="flex-1">
-                                    <h4 className="font-semibold text-gray-900 dark:text-white">{article.title}</h4>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{article.excerpt}</p>
-                                    <div className="flex flex-wrap gap-2 mt-2">
-                                      <span className="text-xs px-2 py-1 rounded-full bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300">
-                                        {article.category}
-                                      </span>
-                                      <span className="text-xs px-2 py-1 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300">
-                                        {article.difficulty}
-                                      </span>
-                                      <span className="text-xs px-2 py-1 rounded-full bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300">
-                                        {article.date}
-                                      </span>
+                                <div className="grid xl:grid-cols-[280px,1fr]">
+                                  <div className="relative min-h-60 overflow-hidden bg-slate-900">
+                                    {article.imageUrl ? (
+                                      <img
+                                        src={article.imageUrl}
+                                        alt={article.title}
+                                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                                        loading="lazy"
+                                      />
+                                    ) : (
+                                      <div className="absolute inset-0 bg-linear-to-br from-pink-600 via-fuchsia-600 to-orange-500" />
+                                    )}
+                                    <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/20 to-transparent" />
+                                    <div className="absolute inset-x-0 bottom-0 p-5 text-white">
+                                      <div className="flex flex-wrap items-center gap-2">
+                                        <span className="inline-flex items-center gap-1 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold backdrop-blur-sm">
+                                          <FiFileText className="h-3.5 w-3.5" />
+                                          Article
+                                        </span>
+                                        <span className="rounded-full bg-amber-500/20 px-3 py-1 text-xs font-semibold text-amber-100 backdrop-blur-sm">
+                                          {article.category}
+                                        </span>
+                                      </div>
+                                      <p className="mt-3 text-sm text-white/80">{article.audience || 'Featured writing'}</p>
                                     </div>
                                   </div>
-                                  <div className="flex gap-2">
-                                    <motion.button
-                                      onClick={() => handleEditArticle(article.id)}
-                                      whileHover={{ scale: 1.05 }}
-                                      whileTap={{ scale: 0.95 }}
-                                      className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium bg-pink-100 hover:bg-pink-200 dark:bg-pink-900/30 dark:hover:bg-pink-900/50 text-pink-700 dark:text-pink-300 transition cursor-pointer"
-                                    >
-                                      <FiEdit3 className="w-4 h-4" />
-                                      Edit
-                                    </motion.button>
-                                    <motion.button
-                                      onClick={() => setDeleteArticleConfirm(article.id)}
-                                      whileHover={{ scale: 1.05 }}
-                                      whileTap={{ scale: 0.95 }}
-                                      className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium bg-red-100 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-900/50 text-red-700 dark:text-red-300 transition cursor-pointer"
-                                    >
-                                      <FiTrash2 className="w-4 h-4" />
-                                      Delete
-                                    </motion.button>
+
+                                  <div className="flex flex-col gap-5 p-5 md:p-6">
+                                    <div>
+                                      <div className="flex flex-wrap items-start justify-between gap-3">
+                                        <div>
+                                          <h4 className="text-xl font-bold text-gray-900 dark:text-white">{article.title}</h4>
+                                          <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">
+                                            {toPreviewText(article.excerpt || article.content, 220)}
+                                          </p>
+                                        </div>
+                                      </div>
+
+                                      <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                                        <div className="rounded-2xl border border-gray-200/70 dark:border-gray-700/70 bg-gray-50/80 dark:bg-gray-800/50 px-4 py-3">
+                                          <p className="text-[11px] uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">Read Time</p>
+                                          <p className="mt-1 text-sm font-semibold text-gray-900 dark:text-white">{article.readTime || 'Not specified'}</p>
+                                        </div>
+                                        <div className="rounded-2xl border border-gray-200/70 dark:border-gray-700/70 bg-gray-50/80 dark:bg-gray-800/50 px-4 py-3">
+                                          <p className="text-[11px] uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">Difficulty</p>
+                                          <p className="mt-1 text-sm font-semibold text-gray-900 dark:text-white">{article.difficulty || 'Not specified'}</p>
+                                        </div>
+                                        <div className="rounded-2xl border border-gray-200/70 dark:border-gray-700/70 bg-gray-50/80 dark:bg-gray-800/50 px-4 py-3">
+                                          <p className="text-[11px] uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">Published</p>
+                                          <p className="mt-1 text-sm font-semibold text-gray-900 dark:text-white">{article.date || 'Not specified'}</p>
+                                        </div>
+                                      </div>
+
+                                      <div className="mt-4 flex flex-wrap gap-2">
+                                        {toDisplayArray(article.tools).slice(0, 4).map((tool) => (
+                                          <span
+                                            key={`${article.id}-${tool}`}
+                                            className="inline-flex items-center rounded-full border border-pink-200/70 bg-pink-50 px-3 py-1 text-xs font-medium text-pink-700 dark:border-pink-800/40 dark:bg-pink-900/25 dark:text-pink-200"
+                                          >
+                                            {tool}
+                                          </span>
+                                        ))}
+                                      </div>
+                                    </div>
+
+                                    <div className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-200/70 dark:border-gray-700/70 pt-4">
+                                      <div className="flex flex-wrap gap-2">
+                                        <span className="inline-flex items-center rounded-full bg-pink-100 px-3 py-1 text-xs font-semibold text-pink-700 dark:bg-pink-900/30 dark:text-pink-200">
+                                          {article.category}
+                                        </span>
+                                        <span className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700 dark:bg-amber-900/30 dark:text-amber-200">
+                                          {article.difficulty}
+                                        </span>
+                                      </div>
+
+                                      <div className="flex gap-2">
+                                        <motion.button
+                                          onClick={() => handleEditArticle(article.id)}
+                                          whileHover={{ scale: 1.03 }}
+                                          whileTap={{ scale: 0.97 }}
+                                          className="inline-flex items-center gap-2 rounded-xl bg-pink-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-pink-700 cursor-pointer"
+                                        >
+                                          <FiEdit3 className="w-4 h-4" />
+                                          Edit
+                                        </motion.button>
+                                        <motion.button
+                                          onClick={() => setDeleteArticleConfirm(article.id)}
+                                          whileHover={{ scale: 1.03 }}
+                                          whileTap={{ scale: 0.97 }}
+                                          className="inline-flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-700 transition hover:bg-red-100 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-200 dark:hover:bg-red-900/30 cursor-pointer"
+                                        >
+                                          <FiTrash2 className="w-4 h-4" />
+                                          Delete
+                                        </motion.button>
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
                               </motion.div>
@@ -1302,19 +1556,50 @@ const Vault = () => {
                     </>
                   )}
 
-                  <div className="border-t border-gray-200/70 dark:border-gray-700/70 pt-6 mt-6">
-                    <h2 className="text-2xl font-bold mb-6 inline-flex items-center gap-2">
-                      <FiEdit3 className="w-5 h-5 text-pink-600 dark:text-pink-400" />
-                      {editingArticleId ? 'Edit Article' : 'Draft New Article'}
-                    </h2>
-                    {editingArticleId && (
-                      <div className="mb-4 p-4 rounded-lg bg-pink-50 dark:bg-pink-900/20 border border-pink-200/70 dark:border-pink-700/40">
-                        <p className="text-sm text-pink-700 dark:text-pink-300">
-                          You are editing an article. Changes will update the existing data.
-                        </p>
-                      </div>
-                    )}
-                  <form onSubmit={editingArticleId ? handleUpdateArticle : handleAddBlog} className="max-w-3xl space-y-4">
+                  {typeof document !== 'undefined' &&
+                    createPortal(
+                      <AnimatePresence>
+                        {isArticleModalOpen && (
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/60 p-4 sm:p-6"
+                            onClick={closeArticleModal}
+                          >
+                            <motion.div
+                              initial={{ scale: 0.96, opacity: 0, y: 16 }}
+                              animate={{ scale: 1, opacity: 1, y: 0 }}
+                              exit={{ scale: 0.96, opacity: 0, y: 16 }}
+                              transition={{ duration: 0.2 }}
+                              onClick={(e) => e.stopPropagation()}
+                              className="relative my-8 w-full max-w-5xl overflow-hidden rounded-3xl border border-gray-200/70 dark:border-gray-700/70 bg-white/95 dark:bg-gray-950/95 shadow-2xl"
+                            >
+                              <div className="max-h-[85vh] overflow-y-auto p-6 md:p-8">
+                                <div className="flex items-start justify-between gap-4 mb-6">
+                                  <h2 className="text-2xl font-bold inline-flex items-center gap-2">
+                                    <FiEdit3 className="w-5 h-5 text-pink-600 dark:text-pink-400" />
+                                    {editingArticleId ? 'Edit Article' : 'Draft New Article'}
+                                  </h2>
+                                  <motion.button
+                                    type="button"
+                                    onClick={closeArticleModal}
+                                    whileHover={{ scale: 1.03 }}
+                                    whileTap={{ scale: 0.97 }}
+                                    className="inline-flex items-center justify-center rounded-xl border border-gray-200 bg-gray-100 px-3 py-2 text-gray-700 transition hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 cursor-pointer"
+                                    aria-label="Close article form"
+                                  >
+                                    <FiX className="w-4 h-4" />
+                                  </motion.button>
+                                </div>
+                                {editingArticleId && (
+                                  <div className="mb-4 p-4 rounded-lg bg-pink-50 dark:bg-pink-900/20 border border-pink-200/70 dark:border-pink-700/40">
+                                    <p className="text-sm text-pink-700 dark:text-pink-300">
+                                      You are editing an article. Changes will update the existing data.
+                                    </p>
+                                  </div>
+                                )}
+                                <form onSubmit={editingArticleId ? handleUpdateArticle : handleAddBlog} className="max-w-3xl space-y-4">
                     <div>
                         <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Article Cover Image {!editingArticleId && <span className="text-red-500">*</span>}</label>
                       <input
@@ -1486,8 +1771,14 @@ const Vault = () => {
                         </span>
                       )}
                     </div>
-                  </form>
-                  </div>
+                                </form>
+                              </div>
+                            </motion.div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>,
+                      document.body,
+                    )}
 
                   <AnimatePresence>
                     {deleteArticleConfirm && (

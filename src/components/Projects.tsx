@@ -244,17 +244,30 @@ const Projects = () => {
 
                 {/* Card Content */}
                 <div className="relative bg-white dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 h-full flex flex-col border border-gray-200/50 dark:border-gray-700/50 group-hover:border-blue-400/50 dark:group-hover:border-blue-500/50 transition-all duration-300 shadow-lg group-hover:shadow-xl">
-                  <div className="mb-4 h-40 rounded-xl overflow-hidden bg-linear-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30">
-                    {project.imageUrl ? (
-                      <img
-                        src={project.imageUrl}
-                        alt={`${project.title} preview`}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-4xl opacity-40">🚀</div>
-                    )}
-                  </div>
+                  <motion.button
+                    type="button"
+                    onClick={() => setSelectedProject(project)}
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
+                    className="group/image mb-4 block w-full overflow-hidden rounded-[1.75rem] border border-gray-200/70 bg-white/70 p-1 text-left shadow-sm transition-all duration-300 hover:border-blue-300 hover:shadow-xl dark:border-gray-700/70 dark:bg-gray-900/40 dark:hover:border-blue-500 cursor-pointer"
+                    aria-label={`Open larger preview for ${project.title}`}
+                  >
+                    <div className="relative h-40 overflow-hidden rounded-[1.35rem] bg-linear-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30">
+                      {project.imageUrl ? (
+                        <img
+                          src={project.imageUrl}
+                          alt={`${project.title} preview`}
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover/image:scale-105"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-4xl opacity-40">🚀</div>
+                      )}
+                      <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover/image:opacity-100" />
+                      <div className="absolute bottom-3 right-3 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold tracking-wide text-gray-700 shadow-md backdrop-blur-sm dark:bg-gray-950/80 dark:text-gray-100">
+                        Click to expand
+                      </div>
+                    </div>
+                  </motion.button>
 
                   {/* Header */}
                   <div className="mb-4 flex items-start justify-between">
@@ -377,11 +390,11 @@ const Projects = () => {
 
                   <div className="pr-10">
                   {selectedProject.imageUrl && (
-                    <div className="mb-5 h-56 md:h-72 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+                    <div className="mb-5 overflow-hidden rounded-4xl border-2 border-white/70 shadow-2xl ring-1 ring-gray-200/70 dark:border-gray-700/70 dark:ring-gray-700/60">
                       <img
                         src={selectedProject.imageUrl}
                         alt={`${selectedProject.title} cover`}
-                        className="w-full h-full object-cover"
+                        className="w-full max-h-128 object-cover"
                       />
                     </div>
                   )}
