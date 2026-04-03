@@ -1,4 +1,4 @@
-# KLab Portfolio
+# My Personal Portfolio
 
 Personal portfolio web app for Terachad / Raymond Igabineza. Built with React, TypeScript, Vite, Firebase, Tailwind CSS, Framer Motion, and React Router.
 
