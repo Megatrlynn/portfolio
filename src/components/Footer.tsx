@@ -1,7 +1,12 @@
 import { motion } from 'framer-motion';
 import { FiArrowUp, FiGithub, FiLinkedin, FiTwitter, FiMail } from 'react-icons/fi';
+import { useInView } from '../hooks/useInView';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 
 const Footer = () => {
+  const { ref: footerRef, inView: footerInView } = useInView({ threshold: 0.3, triggerOnce: false });
+  const prefersReduced = useReducedMotion();
+  
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -56,32 +61,20 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative py-20 overflow-hidden border-t border-gray-200/50 dark:border-gray-700/50 bg-linear-to-b from-white via-blue-50/10 to-purple-50/20 dark:from-gray-950 dark:via-blue-950/5 dark:to-purple-950/10">
+    <footer className="relative py-20 overflow-hidden border-t border-gray-200/50 dark:border-gray-700/50 bg-linear-to-b from-white via-blue-50/10 to-purple-50/20 dark:from-gray-950 dark:via-blue-950/5 dark:to-purple-950/10" ref={footerRef}>
       {/* Animated Background Elements */}
       <motion.div
         className="absolute top-0 left-20 w-96 h-96 bg-linear-to-br from-blue-300/10 to-purple-300/10 rounded-full blur-3xl dark:from-blue-600/5 dark:to-purple-600/5"
-        animate={{
-          x: [0, 30, 0],
-          y: [0, -20, 0],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+        animate={!prefersReduced && footerInView ? { x: [0, 30, 0], y: [0, -20, 0] } : { x: 0, y: 0 }}
+        transition={!prefersReduced && footerInView ? { duration: 10, repeat: Infinity, ease: "easeInOut" } : { duration: 0 }}
+        aria-hidden="true"
       ></motion.div>
 
       <motion.div
         className="absolute bottom-0 right-20 w-96 h-96 bg-linear-to-br from-purple-300/10 to-pink-300/10 rounded-full blur-3xl dark:from-purple-600/5 dark:to-pink-600/5"
-        animate={{
-          x: [0, -30, 0],
-          y: [0, 20, 0],
-        }}
-        transition={{
-          duration: 12,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+        animate={!prefersReduced && footerInView ? { x: [0, -30, 0], y: [0, 20, 0] } : { x: 0, y: 0 }}
+        transition={!prefersReduced && footerInView ? { duration: 12, repeat: Infinity, ease: "easeInOut" } : { duration: 0 }}
+        aria-hidden="true"
       ></motion.div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -221,8 +214,8 @@ const Footer = () => {
           >
             Back to Top
             <motion.div
-              animate={{ y: [0, -2, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
+              animate={prefersReduced ? { y: 0 } : { y: [0, -2, 0] }}
+              transition={prefersReduced ? { duration: 0 } : { duration: 1.5, repeat: Infinity }}
             >
               <FiArrowUp className="w-4 h-4" />
             </motion.div>

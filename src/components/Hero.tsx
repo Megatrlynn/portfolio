@@ -1,7 +1,11 @@
 import { motion } from 'framer-motion';
 import { FiArrowRight, FiGithub, FiLinkedin, FiMail } from 'react-icons/fi';
+import { useInView } from '../hooks/useInView';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 
 const Hero = () => {
+  const { ref: heroRef, inView: heroInView } = useInView({ threshold: 0.3, triggerOnce: false });
+  const prefersReduced = useReducedMotion();
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -22,16 +26,6 @@ const Hero = () => {
     },
   };
 
-  const scrollIndicatorVariants = {
-    animate: {
-      y: [0, 8, 0],
-      transition: {
-        duration: 1.5,
-        repeat: Infinity,
-      },
-    },
-  };
-
   const badgeVariants = {
     hidden: { opacity: 0, scale: 0.8, x: -20 },
     visible: (i: number) => ({
@@ -46,35 +40,37 @@ const Hero = () => {
   };
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+    <header id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20" role="banner" ref={heroRef}>
       {/* Animated Background */}
-      <div className="absolute inset-0 bg-linear-to-br from-white via-blue-50/30 to-purple-50/30 dark:from-gray-950 dark:via-blue-950/20 dark:to-purple-950/20 z-0"></div>
+      <div className="absolute inset-0 bg-linear-to-br from-white via-blue-50/30 to-purple-50/30 dark:from-gray-950 dark:via-blue-950/20 dark:to-purple-950/20 z-0" aria-hidden="true"></div>
 
       {/* Animated Gradient Orbs */}
       <motion.div
         className="absolute top-20 -left-40 w-80 h-80 bg-linear-to-br from-blue-400/30 to-purple-400/30 rounded-full blur-3xl dark:from-blue-600/20 dark:to-purple-600/20"
-        animate={{
+        animate={!prefersReduced && heroInView ? {
           x: [0, 50, 0],
           y: [0, 40, 0],
-        }}
-        transition={{
+        } : { x: 0, y: 0 }}
+        transition={!prefersReduced && heroInView ? {
           duration: 8,
           repeat: Infinity,
           ease: "easeInOut",
-        }}
+        } : { duration: 0 }}
+        aria-hidden="true"
       ></motion.div>
 
       <motion.div
         className="absolute bottom-20 -right-40 w-80 h-80 bg-linear-to-br from-purple-400/30 to-pink-400/30 rounded-full blur-3xl dark:from-purple-600/20 dark:to-pink-600/20"
-        animate={{
+        animate={!prefersReduced && heroInView ? {
           x: [0, -50, 0],
           y: [0, -40, 0],
-        }}
-        transition={{
+        } : { x: 0, y: 0 }}
+        transition={!prefersReduced && heroInView ? {
           duration: 10,
           repeat: Infinity,
           ease: "easeInOut",
-        }}
+        } : { duration: 0 }}
+        aria-hidden="true"
       ></motion.div>
 
       {/* Main Content */}
@@ -115,6 +111,7 @@ const Hero = () => {
                 Hi, I'm Raymond IGABINEZA
               </span>
             </motion.h1>
+            <p className="sr-only">Raymond IGABINEZA - Full Stack Developer, Embedded Systems Engineer, and IoT Specialist</p>
           </div>
 
           {/* Animated Underline */}
@@ -177,8 +174,8 @@ const Hero = () => {
           >
             View My Work
             <motion.div
-              animate={{ x: [0, 5, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
+              animate={!prefersReduced && heroInView ? { x: [0, 5, 0] } : { x: 0 }}
+              transition={!prefersReduced && heroInView ? { duration: 1.5, repeat: Infinity } : { duration: 0 }}
             >
               <FiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </motion.div>
@@ -227,8 +224,13 @@ const Hero = () => {
       {/* Scroll Indicator */}
       <motion.div
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10"
-        variants={scrollIndicatorVariants}
-        animate="animate"
+        animate={!prefersReduced && heroInView ? {
+          y: [0, 8, 0],
+        } : { y: 0 }}
+        transition={!prefersReduced && heroInView ? {
+          duration: 1.5,
+          repeat: Infinity,
+        } : { duration: 0 }}
       >
         <motion.div
           className="flex flex-col items-center gap-2"
@@ -252,7 +254,7 @@ const Hero = () => {
           </svg>
         </motion.div>
       </motion.div>
-    </section>
+    </header>
   );
 };
 

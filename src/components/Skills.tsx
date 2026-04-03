@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 import { FiCode, FiCpu, FiDatabase, FiShield } from 'react-icons/fi';
+import { useInView } from '../hooks/useInView';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 
 interface Skill {
   name: string;
@@ -53,20 +55,24 @@ const skillCategories: SkillCategory[] = [
 ];
 
 const Skills = () => {
+  const { ref: skillsRef, inView: skillsInView } = useInView({ threshold: 0.2, triggerOnce: false });
+  const prefersReduced = useReducedMotion();
   return (
-    <section id="skills" className="relative py-20 md:py-32 overflow-hidden">
-      <div className="absolute inset-0 bg-linear-to-br from-white via-blue-50/20 to-purple-50/20 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10"></div>
+    <section id="skills" className="relative py-20 md:py-32 overflow-hidden" aria-labelledby="skills-heading" ref={skillsRef}>
+      <div className="absolute inset-0 bg-linear-to-br from-white via-blue-50/20 to-purple-50/20 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10" aria-hidden="true"></div>
 
       <motion.div
         className="absolute top-10 left-10 w-72 h-72 bg-linear-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl dark:from-blue-600/10 dark:to-purple-600/10"
-        animate={{ x: [0, 24, 0], y: [0, -24, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        animate={!prefersReduced && skillsInView ? { x: [0, 24, 0], y: [0, -24, 0] } : { x: 0, y: 0 }}
+        transition={!prefersReduced && skillsInView ? { duration: 8, repeat: Infinity, ease: 'easeInOut' } : { duration: 0 }}
+        aria-hidden="true"
       ></motion.div>
 
       <motion.div
         className="absolute bottom-10 right-10 w-72 h-72 bg-linear-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl dark:from-purple-600/10 dark:to-pink-600/10"
-        animate={{ x: [0, -24, 0], y: [0, 24, 0] }}
-        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+        animate={!prefersReduced && skillsInView ? { x: [0, -24, 0], y: [0, 24, 0] } : { x: 0, y: 0 }}
+        transition={!prefersReduced && skillsInView ? { duration: 10, repeat: Infinity, ease: 'easeInOut' } : { duration: 0 }}
+        aria-hidden="true"
       ></motion.div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -77,7 +83,7 @@ const Skills = () => {
           transition={{ duration: 0.7 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
+          <h2 id="skills-heading" className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
             <span className="block bg-linear-to-r from-gray-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
               Skills & Proficiency
             </span>
@@ -88,6 +94,7 @@ const Skills = () => {
             whileInView={{ width: 96 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
+            aria-hidden="true"
           ></motion.div>
           <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mt-6 max-w-3xl mx-auto">
             Core strengths aligned with the technologies highlighted in the hero section, including React, TypeScript, Embedded Systems, and Python.

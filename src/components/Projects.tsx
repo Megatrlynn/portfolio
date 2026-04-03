@@ -6,6 +6,8 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { db } from '../firebase';
 import { FiArrowUpRight, FiGithub, FiExternalLink, FiX } from 'react-icons/fi';
+import { useInView } from '../hooks/useInView';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 
 interface ProjectType {
   id: string;
@@ -30,6 +32,8 @@ const Projects = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [selectedProject, setSelectedProject] = useState<ProjectType | null>(null);
+  const { ref: projectsRef, inView: projectsInView } = useInView({ threshold: 0.2, triggerOnce: false });
+  const prefersReduced = useReducedMotion();
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -129,35 +133,23 @@ const Projects = () => {
   };
 
   return (
-    <section id="projects" className="relative py-20 md:py-32 overflow-hidden">
+    <section id="projects" className="relative py-20 md:py-32 overflow-hidden" aria-labelledby="projects-heading" ref={projectsRef}>
       {/* Background */}
       <div className="absolute inset-0 bg-linear-to-br from-white via-purple-50/20 to-blue-50/20 dark:from-gray-950 dark:via-purple-950/10 dark:to-blue-950/10"></div>
 
       {/* Animated Background Elements */}
       <motion.div
         className="absolute top-20 left-10 w-72 h-72 bg-linear-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl dark:from-blue-600/10 dark:to-purple-600/10"
-        animate={{
-          x: [0, 30, 0],
-          y: [0, -30, 0],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+        animate={!prefersReduced && projectsInView ? { x: [0, 30, 0], y: [0, -30, 0] } : { x: 0, y: 0 }}
+        transition={!prefersReduced && projectsInView ? { duration: 10, repeat: Infinity, ease: "easeInOut" } : { duration: 0 }}
+        aria-hidden="true"
       ></motion.div>
 
       <motion.div
         className="absolute bottom-20 right-10 w-72 h-72 bg-linear-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl dark:from-purple-600/10 dark:to-pink-600/10"
-        animate={{
-          x: [0, -30, 0],
-          y: [0, 30, 0],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+        animate={!prefersReduced && projectsInView ? { x: [0, -30, 0], y: [0, 30, 0] } : { x: 0, y: 0 }}
+        transition={!prefersReduced && projectsInView ? { duration: 10, repeat: Infinity, ease: "easeInOut" } : { duration: 0 }}
+        aria-hidden="true"
       ></motion.div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -169,7 +161,7 @@ const Projects = () => {
           viewport={{ once: true, margin: "-100px" }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
+          <h2 id="projects-heading" className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
             <span className="block bg-linear-to-r from-gray-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
               Featured Projects
             </span>
@@ -180,6 +172,7 @@ const Projects = () => {
             whileInView={{ width: 96 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.3 }}
+            aria-hidden="true"
           ></motion.div>
           <motion.p
             variants={itemVariants}

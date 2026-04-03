@@ -3,4 +3,9 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+}
+
+section[id], header[id] {
+  scroll-margin-top: 96px;
 }

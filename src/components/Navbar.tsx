@@ -116,14 +116,12 @@ const Navbar = () => {
     const targetSection = document.getElementById(sectionId);
 
     if (!targetSection) {
+      setIsOpen(false);
       return;
     }
 
-    const navOffset = 88;
-    const targetTop = targetSection.getBoundingClientRect().top + window.scrollY - navOffset;
-    window.scrollTo({ top: targetTop, behavior: 'smooth' });
-    window.history.replaceState(null, '', `#${sectionId}`);
-
+    setActiveSection(sectionId);
+    setIsOpen(false);
     clickScrollTargetRef.current = sectionId;
     if (clickScrollTimeoutRef.current) {
       window.clearTimeout(clickScrollTimeoutRef.current);
@@ -132,8 +130,10 @@ const Navbar = () => {
       clickScrollTargetRef.current = null;
     }, 1200);
 
-    setActiveSection(sectionId);
-    setIsOpen(false);
+    window.requestAnimationFrame(() => {
+      targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.history.replaceState(null, '', `#${sectionId}`);
+    });
   };
 
   useEffect(() => {

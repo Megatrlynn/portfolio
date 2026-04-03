@@ -6,6 +6,7 @@ import { db } from '../firebase';
 import { GoogleGenAI } from '@google/genai';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 
 interface Message {
   id: string;
@@ -25,6 +26,7 @@ const AiAssistant = () => {
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const prefersReduced = useReducedMotion();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -126,15 +128,15 @@ Please provide a helpful, engaging, and professional response to the user's ques
             {/* Glow effect */}
             <motion.div
               className="absolute inset-0 bg-linear-to-r from-blue-600 to-purple-600 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
+              animate={!prefersReduced ? { scale: [1, 1.1, 1] } : { scale: 1 }}
+              transition={!prefersReduced ? { duration: 2, repeat: Infinity } : { duration: 0 }}
             ></motion.div>
 
             {/* Button */}
             <div className="relative w-16 h-16 bg-linear-to-br from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full shadow-2xl flex items-center justify-center border border-blue-400/30 transition-all duration-300">
               <motion.div
-                animate={{ rotate: [0, 10, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
+                animate={!prefersReduced ? { rotate: [0, 10, 0] } : { rotate: 0 }}
+                transition={!prefersReduced ? { duration: 2, repeat: Infinity } : { duration: 0 }}
               >
                 <FiMessageCircle size={28} />
               </motion.div>
@@ -142,8 +144,8 @@ Please provide a helpful, engaging, and professional response to the user's ques
               {/* Pulse indicator */}
               <motion.div
                 className="absolute inset-0 rounded-full border-2 border-blue-400"
-                animate={{ scale: [1, 1.2], opacity: [1, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
+                animate={!prefersReduced ? { scale: [1, 1.2], opacity: [1, 0] } : { scale: 1, opacity: 1 }}
+                transition={!prefersReduced ? { duration: 1.5, repeat: Infinity } : { duration: 0 }}
               ></motion.div>
             </div>
           </motion.button>
@@ -164,15 +166,15 @@ Please provide a helpful, engaging, and professional response to the user's ques
             <div className="absolute inset-0 -z-10">
               <motion.div
                 className="absolute top-0 left-0 w-96 h-96 bg-linear-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl dark:from-blue-600/5 dark:to-purple-600/5"
-                animate={{
+                animate={!prefersReduced ? {
                   x: [0, 20, 0],
                   y: [0, -20, 0],
-                }}
-                transition={{
+                } : { x: 0, y: 0 }}
+                transition={!prefersReduced ? {
                   duration: 8,
                   repeat: Infinity,
                   ease: "easeInOut",
-                }}
+                } : { duration: 0 }}
               ></motion.div>
             </div>
 
@@ -187,8 +189,8 @@ Please provide a helpful, engaging, and professional response to the user's ques
                 animate={{ opacity: 1, x: 0 }}
               >
                 <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+                  animate={!prefersReduced ? { rotate: 360 } : { rotate: 0 }}
+                  transition={!prefersReduced ? { duration: 6, repeat: Infinity, ease: "linear" } : { duration: 0 }}
                   className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center border border-white/30 backdrop-blur-sm"
                 >
                   <FiCpu size={18} />
@@ -271,18 +273,18 @@ Please provide a helpful, engaging, and professional response to the user's ques
                   </div>
                   <div className="px-4 py-3 rounded-2xl rounded-tl-none bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 border border-gray-200/50 dark:border-gray-700/50 flex gap-1 items-center">
                     <motion.div
-                      animate={{ scale: [0.8, 1, 0.8] }}
-                      transition={{ repeat: Infinity, duration: 0.6, delay: 0 }}
+                      animate={!prefersReduced ? { scale: [0.8, 1, 0.8] } : { scale: 1 }}
+                      transition={!prefersReduced ? { repeat: Infinity, duration: 0.6, delay: 0 } : { duration: 0 }}
                       className="w-2 h-2 bg-blue-500 rounded-full"
                     ></motion.div>
                     <motion.div
-                      animate={{ scale: [0.8, 1, 0.8] }}
-                      transition={{ repeat: Infinity, duration: 0.6, delay: 0.2 }}
+                      animate={!prefersReduced ? { scale: [0.8, 1, 0.8] } : { scale: 1 }}
+                      transition={!prefersReduced ? { repeat: Infinity, duration: 0.6, delay: 0.2 } : { duration: 0 }}
                       className="w-2 h-2 bg-purple-500 rounded-full"
                     ></motion.div>
                     <motion.div
-                      animate={{ scale: [0.8, 1, 0.8] }}
-                      transition={{ repeat: Infinity, duration: 0.6, delay: 0.4 }}
+                      animate={!prefersReduced ? { scale: [0.8, 1, 0.8] } : { scale: 1 }}
+                      transition={!prefersReduced ? { repeat: Infinity, duration: 0.6, delay: 0.4 } : { duration: 0 }}
                       className="w-2 h-2 bg-pink-500 rounded-full"
                     ></motion.div>
                   </div>
@@ -340,8 +342,8 @@ Please provide a helpful, engaging, and professional response to the user's ques
                 className="p-2.5 bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <motion.div
-                  animate={input.trim() && !isTyping ? { x: [0, 2, 0] } : {}}
-                  transition={{ repeat: Infinity, duration: 1.5 }}
+                  animate={!prefersReduced && input.trim() && !isTyping ? { x: [0, 2, 0] } : { x: 0 }}
+                  transition={!prefersReduced && input.trim() && !isTyping ? { repeat: Infinity, duration: 1.5 } : { duration: 0 }}
                 >
                   <FiSend size={18} />
                 </motion.div>

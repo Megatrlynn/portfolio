@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiGithub, FiLinkedin, FiTwitter, FiMail, FiCheck, FiAlertCircle } from 'react-icons/fi';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase';
+import { useInView } from '../hooks/useInView';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +13,8 @@ const Contact = () => {
     message: ''
   });
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const { ref: contactRef, inView: contactInView } = useInView({ threshold: 0.2, triggerOnce: false });
+  const prefersReduced = useReducedMotion();
 
   const socialLinks = [
     { icon: FiGithub, label: 'GitHub', href: 'https://github.com/Megatrlynn', color: 'from-gray-600 to-gray-800' },
@@ -84,35 +88,23 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="relative py-20 md:py-32 overflow-hidden">
+    <section id="contact" className="relative py-20 md:py-32 overflow-hidden" aria-labelledby="contact-heading" ref={contactRef}>
       {/* Background */}
-      <div className="absolute inset-0 bg-linear-to-br from-white via-blue-50/20 to-purple-50/20 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10"></div>
+      <div className="absolute inset-0 bg-linear-to-br from-white via-blue-50/20 to-purple-50/20 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10" aria-hidden="true"></div>
 
       {/* Animated Background Elements */}
       <motion.div
         className="absolute top-20 left-10 w-72 h-72 bg-linear-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl dark:from-blue-600/10 dark:to-purple-600/10"
-        animate={{
-          x: [0, 30, 0],
-          y: [0, -30, 0],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+        animate={!prefersReduced && contactInView ? { x: [0, 30, 0], y: [0, -30, 0] } : { x: 0, y: 0 }}
+        transition={!prefersReduced && contactInView ? { duration: 8, repeat: Infinity, ease: "easeInOut" } : { duration: 0 }}
+        aria-hidden="true"
       ></motion.div>
 
       <motion.div
         className="absolute bottom-10 right-10 w-72 h-72 bg-linear-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl dark:from-purple-600/10 dark:to-pink-600/10"
-        animate={{
-          x: [0, -30, 0],
-          y: [0, 30, 0],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+        animate={!prefersReduced && contactInView ? { x: [0, -30, 0], y: [0, 30, 0] } : { x: 0, y: 0 }}
+        transition={!prefersReduced && contactInView ? { duration: 10, repeat: Infinity, ease: "easeInOut" } : { duration: 0 }}
+        aria-hidden="true"
       ></motion.div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -124,7 +116,7 @@ const Contact = () => {
           viewport={{ once: true, margin: "-100px" }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
+          <h2 id="contact-heading" className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
             <span className="block bg-linear-to-r from-gray-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
               Get In Touch
             </span>
@@ -135,6 +127,7 @@ const Contact = () => {
             whileInView={{ width: 96 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.3 }}
+            aria-hidden="true"
           ></motion.div>
           <motion.p
             variants={itemVariants}
@@ -335,8 +328,8 @@ const Contact = () => {
                   <span className="relative flex items-center justify-center gap-2">
                     {status === 'submitting' && (
                       <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        animate={prefersReduced ? { rotate: 0 } : { rotate: 360 }}
+                        transition={prefersReduced ? { duration: 0 } : { duration: 1, repeat: Infinity, ease: "linear" }}
                         className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
                       ></motion.div>
                     )}

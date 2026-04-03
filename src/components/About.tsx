@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { FiDownload, FiAward, FiCode, FiTarget } from 'react-icons/fi';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
+import { useInView } from '../hooks/useInView';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 
 const skills = [
   {
@@ -33,6 +35,8 @@ const stats = [
 const About = () => {
   const [imageFailed, setImageFailed] = useState(false);
   const [cvUrl, setCvUrl] = useState('/cv.pdf');
+  const { ref: aboutRef, inView: aboutInView } = useInView({ threshold: 0.2, triggerOnce: false });
+  const prefersReduced = useReducedMotion();
 
   const profileImageModules = {
     ...import.meta.glob<{ default: string }>('../assets/images/terachad.{png,jpg,jpeg,webp,avif,gif,svg}', { eager: true }),
@@ -109,35 +113,37 @@ const About = () => {
   };
 
   return (
-    <section id="about" className="relative py-20 md:py-32 overflow-hidden">
+    <section id="about" className="relative py-20 md:py-32 overflow-hidden" aria-labelledby="about-heading" ref={aboutRef}>
       {/* Background */}
-      <div className="absolute inset-0 bg-linear-to-br from-white via-blue-50/20 to-purple-50/20 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10"></div>
+      <div className="absolute inset-0 bg-linear-to-br from-white via-blue-50/20 to-purple-50/20 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10" aria-hidden="true"></div>
 
       {/* Animated Background Elements */}
       <motion.div
         className="absolute top-10 right-10 w-72 h-72 bg-linear-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl dark:from-blue-600/10 dark:to-purple-600/10"
-        animate={{
+        animate={!prefersReduced && aboutInView ? {
           x: [0, 30, 0],
           y: [0, -30, 0],
-        }}
-        transition={{
+        } : { x: 0, y: 0 }}
+        transition={!prefersReduced && aboutInView ? {
           duration: 8,
           repeat: Infinity,
           ease: "easeInOut",
-        }}
+        } : { duration: 0 }}
+        aria-hidden="true"
       ></motion.div>
 
       <motion.div
         className="absolute bottom-10 left-10 w-72 h-72 bg-linear-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl dark:from-purple-600/10 dark:to-pink-600/10"
-        animate={{
+        animate={!prefersReduced && aboutInView ? {
           x: [0, -30, 0],
           y: [0, 30, 0],
-        }}
-        transition={{
+        } : { x: 0, y: 0 }}
+        transition={!prefersReduced && aboutInView ? {
           duration: 10,
           repeat: Infinity,
           ease: "easeInOut",
-        }}
+        } : { duration: 0 }}
+        aria-hidden="true"
       ></motion.div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -149,7 +155,7 @@ const About = () => {
           viewport={{ once: true, margin: "-100px" }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
+          <h2 id="about-heading" className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
             <span className="block bg-linear-to-r from-gray-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
               About Me
             </span>
@@ -160,6 +166,7 @@ const About = () => {
             whileInView={{ width: 96 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.3 }}
+            aria-hidden="true"
           ></motion.div>
         </motion.div>
 
@@ -186,6 +193,7 @@ const About = () => {
                   duration: 3,
                   repeat: Infinity,
                 }}
+                aria-hidden="true"
               ></motion.div>
 
               {/* Image Container */}
@@ -193,7 +201,7 @@ const About = () => {
                 {profileImageSrc && !imageFailed ? (
                   <img
                     src={profileImageSrc}
-                    alt="Terachad profile"
+                    alt="Terachad - Full Stack Developer and IoT Specialist"
                     className="h-full w-full object-cover"
                     onError={() => setImageFailed(true)}
                   />

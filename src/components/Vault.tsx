@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { collection, getDocs, addDoc, query, orderBy, doc, getDoc, setDoc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
 import { auth, db } from '../firebase';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 import {
   FiLogOut,
   FiArrowLeft,
@@ -67,6 +68,7 @@ const Vault = () => {
   const [adminCheckDone, setAdminCheckDone] = useState(false);
   const [activeTab, setActiveTab] = useState<'messages' | 'projects' | 'blog' | 'cv'>('messages');
   const navigate = useNavigate();
+  const prefersReduced = useReducedMotion();
 
   const [projectData, setProjectData] = useState({
     title: '',
@@ -681,20 +683,20 @@ const Vault = () => {
       <div className="relative min-h-screen flex items-center justify-center bg-linear-to-br from-gray-950 via-blue-950/20 to-purple-950/20 text-white overflow-hidden">
         <motion.div
           className="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-linear-to-br from-blue-500/15 to-purple-500/15 blur-3xl"
-          animate={{ x: [0, 25, 0], y: [0, -20, 0] }}
-          transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+          animate={!prefersReduced ? { x: [0, 25, 0], y: [0, -20, 0] } : { x: 0, y: 0 }}
+          transition={!prefersReduced ? { duration: 7, repeat: Infinity, ease: 'easeInOut' } : { duration: 0 }}
         ></motion.div>
         <div className="flex flex-col items-center gap-4">
           <div className="relative w-14 h-14">
             <motion.div
               className="absolute inset-0 rounded-full border-2 border-blue-400/30"
-              animate={{ scale: [1, 1.3], opacity: [0.8, 0] }}
-              transition={{ duration: 1.4, repeat: Infinity }}
+              animate={!prefersReduced ? { scale: [1, 1.3], opacity: [0.8, 0] } : { scale: 1, opacity: 0.8 }}
+              transition={!prefersReduced ? { duration: 1.4, repeat: Infinity } : { duration: 0 }}
             ></motion.div>
             <motion.div
               className="w-14 h-14 rounded-full border-3 border-blue-400 border-t-transparent"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+              animate={!prefersReduced ? { rotate: 360 } : { rotate: 0 }}
+              transition={!prefersReduced ? { duration: 1, repeat: Infinity, ease: 'linear' } : { duration: 0 }}
             ></motion.div>
           </div>
           <p className="text-sm text-blue-100">Opening Vault...</p>
@@ -749,13 +751,13 @@ const Vault = () => {
     <section className="relative min-h-screen overflow-hidden py-10 px-4 sm:px-6 lg:px-8 bg-linear-to-br from-slate-50 via-blue-50/25 to-purple-50/20 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10 text-gray-900 dark:text-white">
       <motion.div
         className="absolute -top-24 left-0 w-96 h-96 rounded-full bg-linear-to-br from-blue-500/20 to-purple-500/20 blur-3xl dark:from-blue-500/10 dark:to-purple-500/10"
-        animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
-        transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
+        animate={!prefersReduced ? { x: [0, 30, 0], y: [0, -20, 0] } : { x: 0, y: 0 }}
+        transition={!prefersReduced ? { duration: 9, repeat: Infinity, ease: 'easeInOut' } : { duration: 0 }}
       ></motion.div>
       <motion.div
         className="absolute -bottom-20 right-0 w-96 h-96 rounded-full bg-linear-to-br from-pink-500/15 to-indigo-500/20 blur-3xl dark:from-pink-500/10 dark:to-indigo-500/10"
-        animate={{ x: [0, -25, 0], y: [0, 20, 0] }}
-        transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut' }}
+        animate={!prefersReduced ? { x: [0, -25, 0], y: [0, 20, 0] } : { x: 0, y: 0 }}
+        transition={!prefersReduced ? { duration: 11, repeat: Infinity, ease: 'easeInOut' } : { duration: 0 }}
       ></motion.div>
 
       <div className="relative z-10 max-w-6xl mx-auto">

@@ -6,6 +6,8 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { db } from '../firebase';
 import { FiCalendar, FiClock, FiArrowRight, FiTag, FiX, FiExternalLink } from 'react-icons/fi';
+import { useInView } from '../hooks/useInView';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 
 interface BlogPost {
   id: string;
@@ -37,6 +39,8 @@ const Blog = () => {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+  const { ref: blogRef, inView: blogInView } = useInView({ threshold: 0.2, triggerOnce: false });
+  const prefersReduced = useReducedMotion();
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -140,45 +144,35 @@ const Blog = () => {
   };
 
   const loadingSkeletonVariants = {
-    animate: {
-      opacity: [0.5, 1, 0.5],
-      transition: {
-        duration: 2,
-        repeat: Infinity,
-      },
-    },
+    animate: prefersReduced
+      ? { opacity: 1 }
+      : {
+          opacity: [0.5, 1, 0.5],
+          transition: {
+            duration: 2,
+            repeat: Infinity,
+          },
+        },
   };
 
   return (
-    <section id="blog" className="relative py-20 md:py-32 overflow-hidden">
+    <section id="blog" className="relative py-20 md:py-32 overflow-hidden" aria-labelledby="blog-heading" ref={blogRef}>
       {/* Background */}
-      <div className="absolute inset-0 bg-linear-to-br from-white via-blue-50/20 to-purple-50/20 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10"></div>
+      <div className="absolute inset-0 bg-linear-to-br from-white via-blue-50/20 to-purple-50/20 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10" aria-hidden="true"></div>
 
       {/* Animated Background Elements */}
       <motion.div
         className="absolute top-20 right-10 w-72 h-72 bg-linear-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl dark:from-blue-600/10 dark:to-purple-600/10"
-        animate={{
-          x: [0, 30, 0],
-          y: [0, -30, 0],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+        animate={!prefersReduced && blogInView ? { x: [0, 30, 0], y: [0, -30, 0] } : { x: 0, y: 0 }}
+        transition={!prefersReduced && blogInView ? { duration: 8, repeat: Infinity, ease: "easeInOut" } : { duration: 0 }}
+        aria-hidden="true"
       ></motion.div>
 
       <motion.div
         className="absolute bottom-10 left-10 w-72 h-72 bg-linear-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl dark:from-purple-600/10 dark:to-pink-600/10"
-        animate={{
-          x: [0, -30, 0],
-          y: [0, 30, 0],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+        animate={!prefersReduced && blogInView ? { x: [0, -30, 0], y: [0, 30, 0] } : { x: 0, y: 0 }}
+        transition={!prefersReduced && blogInView ? { duration: 10, repeat: Infinity, ease: "easeInOut" } : { duration: 0 }}
+        aria-hidden="true"
       ></motion.div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -190,7 +184,7 @@ const Blog = () => {
           viewport={{ once: true, margin: "-100px" }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
+          <h2 id="blog-heading" className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
             <span className="block bg-linear-to-r from-gray-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
               Latest Articles
             </span>
@@ -201,6 +195,7 @@ const Blog = () => {
             whileInView={{ width: 96 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.3 }}
+            aria-hidden="true"
           ></motion.div>
           <motion.p
             variants={itemVariants}
@@ -314,8 +309,8 @@ const Blog = () => {
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
                           <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                            animate={prefersReduced ? { rotate: 0 } : { rotate: 360 }}
+                            transition={prefersReduced ? { duration: 0 } : { duration: 20, repeat: Infinity, ease: "linear" }}
                           >
                             <div className="text-4xl opacity-20">📝</div>
                           </motion.div>
