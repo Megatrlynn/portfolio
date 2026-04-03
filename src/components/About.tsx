@@ -27,9 +27,9 @@ const skills = [
 ];
 
 const stats = [
-  { label: 'Projects Completed', value: '15+', icon: FiCode },
+  { label: 'Projects Completed', value: '6+', icon: FiCode },
   { label: 'Technologies', value: '20+', icon: FiAward },
-  { label: 'Years Experience', value: '4+', icon: FiTarget },
+  { label: 'Years Experience', value: '3+', icon: FiTarget },
 ];
 
 const About = () => {
@@ -224,7 +224,7 @@ const About = () => {
               >
                 <div className="text-center">
                   <p className="text-sm text-gray-600 dark:text-gray-400">Passionate Creator</p>
-                  <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">4+ Yrs</p>
+                  <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">3+ Yrs</p>
                 </div>
               </motion.div>
             </div>
