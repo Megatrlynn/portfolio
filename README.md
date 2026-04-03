@@ -1,14 +1,68 @@
-# React + TypeScript + Vite
+# KLab Portfolio
 
-## Environment Setup (Firebase)
+Personal portfolio web app for Terachad / Raymond Igabineza. Built with React, TypeScript, Vite, Firebase, Tailwind CSS, Framer Motion, and React Router.
 
-This project now reads Firebase web config from environment variables.
+## What It Includes
 
-1. Copy `.env.example` to `.env`.
-2. Fill in your Firebase values.
-3. Start the app with `npm run dev`.
+- Hero section with animated intro and CTA links
+- About, Skills, Projects, Experience, Blog, and Contact sections
+- Realtime Firebase content for public data
+- Admin vault at `/vault` for managing messages, projects, blog posts, and CV settings
+- Gemini-powered AI assistant
+- Dark mode with persisted theme preference
+- SEO metadata, Open Graph tags, and structured data in `index.html`
+- Motion performance safeguards that respect `prefers-reduced-motion`
 
-Required variables:
+## Key Behavior
+
+- Public content updates live from Firestore using `onSnapshot`
+- Navbar scrollspy tracks the active section while scrolling
+- Mobile navigation scrolls reliably to sections and closes after selection
+- Decorative animations stay active only when visible and are disabled for reduced-motion users
+- The app is a single-page portfolio with a dedicated admin route for content management
+
+## Tech Stack
+
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS 4
+- Framer Motion
+- Firebase Auth, Firestore, and optional Storage usage for admin content
+- React Router DOM
+- React Markdown + remark-gfm
+- Google GenAI SDK for the AI assistant
+
+## Project Structure
+
+- `src/components/` - page sections, navbar, footer, assistant, and vault
+- `src/firebase.ts` - Firebase client setup
+- `src/hooks/` - shared hooks such as viewport and reduced-motion detection
+- `src/utils/` - shared motion helpers
+- `public/` - static assets and redirects
+- `scripts/` - Firebase/admin maintenance scripts
+
+## Getting Started
+
+1. Install dependencies.
+
+```bash
+npm install
+```
+
+2. Create a `.env` file with your local configuration.
+
+3. Start the dev server.
+
+```bash
+npm run dev
+```
+
+## Environment Variables
+
+The app reads Firebase and third-party keys from environment variables.
+
+Required Firebase values:
 
 - `VITE_FIREBASE_API_KEY`
 - `VITE_FIREBASE_AUTH_DOMAIN`
@@ -16,84 +70,56 @@ Required variables:
 - `VITE_FIREBASE_STORAGE_BUCKET`
 - `VITE_FIREBASE_MESSAGING_SENDER_ID`
 - `VITE_FIREBASE_APP_ID`
-- `VITE_FIREBASE_MEASUREMENT_ID` (optional)
+- `VITE_FIREBASE_MEASUREMENT_ID` optional
 
-## GitHub Upload Safety
+Other values currently used by the app:
 
-The following sensitive/local files are ignored by git:
+- `VITE_IMGBB_API_KEY`
+- `IMGBB_API_KEY`
+- `VITE_GEMINI_API_KEY`
 
-- `.env` and other `.env.*` files (except `.env.example`)
-- Firebase admin credential JSON files like `*-firebase-adminsdk-*.json`
-- `serviceAccountKey*.json`
+## Available Scripts
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- `npm run dev` - start the Vite dev server
+- `npm run build` - type-check and build for production
+- `npm run lint` - run ESLint
+- `npm run preview` - preview the production build locally
+- `npm run set-admin-claim` - assign admin claim for the vault workflow
+- `npm run migrate-content-details` - migrate content details
+- `npm run migrate-content-details:commit` - run the migration with commit mode
 
-Currently, two official plugins are available:
+## Firebase Notes
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Public portfolio content is read from Firestore in realtime for live updates.
+- The admin vault depends on Firebase Auth and custom claims for access control.
+- Keep admin credential JSON files out of git.
 
-## React Compiler
+## SEO Notes
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `index.html` now contains a stronger document title, meta description, Open Graph data, Twitter card metadata, and JSON-LD structured data.
+- Sections use semantic structure and accessible heading relationships.
 
-## Expanding the ESLint configuration
+## Performance Notes
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Entrance and decorative animations are kept, but they pause when offscreen.
+- Reduced-motion users get a calmer experience without losing core functionality.
+- Heavy sections rely on reusable motion helpers to avoid unnecessary animation work.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Deployment Notes
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- The app is configured for Vite deployment.
+- `public/_redirects` and `firebase.json` are present for hosting/redirect support.
+- Build output is generated in `dist/`.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Security Notes
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Do not commit `.env` files or Firebase admin key JSON files.
+- Treat the vault route as protected admin functionality.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Verification
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Production build should succeed with:
+
+```bash
+npm run build
 ```
