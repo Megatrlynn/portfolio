@@ -15,27 +15,59 @@ interface ExperienceItem {
 const experienceData: ExperienceItem[] = [
   {
     id: 1,
-    type: 'education',
-    title: 'Bachelor of Technology in ICT',
-    organization: 'RP-Kigali College',
-    date: 'Current',
-    description: 'Specializing in software development, embedded systems, and network administration. Currently developing the VitalTrack Mobility System as a capstone project.'
+    type: 'work',
+    title: 'Assistant Support',
+    organization: 'Gicumbi District HQ, Gicumbi, Rwanda',
+    date: '2022 - 2023',
+    description: 'Supported secure software implementation, managed user access controls, documented device security protocols, maintained software inventories, and assisted with software and hardware issue resolution.'
   },
   {
     id: 2,
     type: 'work',
-    title: 'IT & Programming Mentor',
-    organization: 'Independent',
-    date: 'Jan 2026 - Present',
-    description: 'Developed and delivered a comprehensive curriculum coaching individuals on programming languages, networking, and modern IT practices.'
+    title: 'IT Support Intern',
+    organization: 'Gicumbi District HQ, Gicumbi, Rwanda',
+    date: 'Jun 2023 - Jul 2023',
+    description: 'Provided daily IT support and troubleshooting, collaborated with senior engineers on network systems, and improved technical confidence in real-time support environments.'
   },
   {
     id: 3,
-    type: 'work',
-    title: 'Full Stack & IoT Developer',
-    organization: 'Freelance',
-    date: '2025 - Present',
-    description: 'Building custom hardware and software solutions, including smart home network monitors and robotic systems using React, Python, ESP32, and Raspberry Pi.'
+    type: 'education',
+    title: "Bachelor's Degree in Information Technology",
+    organization: 'IRPC Kigali, Kicukiro, Kigali',
+    date: 'Sep 2025 - Current',
+    description: 'Currently pursuing a Bachelor\'s Degree in Information Technology.'
+  },
+  {
+    id: 4,
+    type: 'education',
+    title: 'A1 Advanced Diploma in Information Technology',
+    organization: 'IPRC Kigali, Kicukiro, Kigali',
+    date: 'Feb 2022 - Oct 2024',
+    description: 'Completed advanced diploma studies with strong practical and technical IT training.'
+  },
+  {
+    id: 5,
+    type: 'education',
+    title: 'A2 Certificate in Networking',
+    organization: 'IPRC Ngoma, Ngoma, Rwanda',
+    date: 'Jan 2018 - Feb 2021',
+    description: 'Built foundational expertise in networking concepts and systems.'
+  },
+  {
+    id: 6,
+    type: 'education',
+    title: 'Ordinary Level Certificate (O-Level)',
+    organization: 'Academie De La Salle, Gicumbi, Rwanda',
+    date: 'Feb 2015 - Nov 2017',
+    description: 'Completed ordinary level secondary education.'
+  },
+  {
+    id: 7,
+    type: 'education',
+    title: 'Primary School Certificate',
+    organization: 'Centenary Standard School, Mbarara, Uganda',
+    date: 'Jan 2009 - Oct 2014',
+    description: 'Completed primary education.'
   }
 ];
 
