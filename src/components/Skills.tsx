@@ -106,7 +106,7 @@ const Skills = () => {
     visible: (index: number) => ({
       opacity: 1,
       y: 0,
-      transition: { duration: 0.65, delay: index * 0.1, ease: 'easeOut' },
+      transition: { duration: 0.65, delay: index * 0.1, ease: 'easeOut' as const },
     }),
   };
 
@@ -115,7 +115,7 @@ const Skills = () => {
     visible: (index: number) => ({
       opacity: 1,
       y: 0,
-      transition: { duration: 0.45, delay: 0.12 + index * 0.08, ease: 'easeOut' },
+      transition: { duration: 0.45, delay: 0.12 + index * 0.08, ease: 'easeOut' as const },
     }),
   };
 
