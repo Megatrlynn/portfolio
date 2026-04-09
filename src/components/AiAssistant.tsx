@@ -127,13 +127,13 @@ Please provide a helpful, engaging, and professional response to the user's ques
           >
             {/* Glow effect */}
             <motion.div
-              className="absolute inset-0 bg-linear-to-r from-blue-600 to-purple-600 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              className="absolute inset-0 bg-blue-600/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
               animate={!prefersReduced ? { scale: [1, 1.1, 1] } : { scale: 1 }}
               transition={!prefersReduced ? { duration: 2, repeat: Infinity } : { duration: 0 }}
             ></motion.div>
 
             {/* Button */}
-            <div className="relative w-16 h-16 bg-linear-to-br from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full shadow-2xl flex items-center justify-center border border-blue-400/30 transition-all duration-300">
+            <div className="relative w-16 h-16 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-2xl flex items-center justify-center border border-blue-400/30 transition-all duration-300">
               <motion.div
                 animate={!prefersReduced ? { rotate: [0, 10, 0] } : { rotate: 0 }}
                 transition={!prefersReduced ? { duration: 2, repeat: Infinity } : { duration: 0 }}
@@ -165,7 +165,7 @@ Please provide a helpful, engaging, and professional response to the user's ques
             {/* Animated background gradient */}
             <div className="absolute inset-0 -z-10">
               <motion.div
-                className="absolute top-0 left-0 w-96 h-96 bg-linear-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl dark:from-blue-600/5 dark:to-purple-600/5"
+                className="absolute top-0 left-0 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl dark:bg-blue-600/5"
                 animate={!prefersReduced ? {
                   x: [0, 20, 0],
                   y: [0, -20, 0],
@@ -180,7 +180,7 @@ Please provide a helpful, engaging, and professional response to the user's ques
 
             {/* Header */}
             <motion.div
-              className="relative bg-linear-to-r from-blue-600 via-purple-600 to-pink-600 text-white p-5 flex justify-between items-center border-b border-blue-400/20 backdrop-blur-sm"
+              className="relative bg-blue-600 text-white p-5 flex justify-between items-center border-b border-blue-400/20 backdrop-blur-sm"
               layout
             >
               <motion.div
@@ -226,11 +226,11 @@ Please provide a helpful, engaging, and professional response to the user's ques
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                     >
-                      <div className="w-7 h-7 rounded-full bg-linear-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white shrink-0 shadow-md">
+                      <div className="w-7 h-7 rounded-full bg-blue-500 flex items-center justify-center text-white shrink-0 shadow-md">
                         <FiCpu size={14} />
                       </div>
                       <motion.div
-                        className="max-w-xs px-4 py-3 rounded-2xl rounded-tl-none bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 border border-gray-200/50 dark:border-gray-700/50 shadow-sm"
+                        className="max-w-xs px-4 py-3 rounded-2xl rounded-tl-none bg-gray-50 dark:bg-gray-800 border border-gray-200/50 dark:border-gray-700/50 shadow-sm"
                         layout
                       >
                         <div className="text-sm leading-relaxed text-gray-900 dark:text-white ReactMarkdown-container">
@@ -252,7 +252,7 @@ Please provide a helpful, engaging, and professional response to the user's ques
                     </motion.div>
                   ) : (
                     <motion.div
-                      className="max-w-xs px-4 py-3 rounded-2xl rounded-tr-none bg-linear-to-br from-blue-600 to-purple-600 text-white shadow-md"
+                      className="max-w-xs px-4 py-3 rounded-2xl rounded-tr-none bg-blue-600 text-white shadow-md"
                       initial={{ opacity: 0, x: 10 }}
                       animate={{ opacity: 1, x: 0 }}
                     >
@@ -268,10 +268,10 @@ Please provide a helpful, engaging, and professional response to the user's ques
                   animate={{ opacity: 1, y: 0 }}
                   className="flex gap-2 items-center"
                 >
-                  <div className="w-7 h-7 rounded-full bg-linear-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white shrink-0 shadow-md">
+                  <div className="w-7 h-7 rounded-full bg-blue-500 flex items-center justify-center text-white shrink-0 shadow-md">
                     <FiCpu size={14} />
                   </div>
-                  <div className="px-4 py-3 rounded-2xl rounded-tl-none bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 border border-gray-200/50 dark:border-gray-700/50 flex gap-1 items-center">
+                  <div className="px-4 py-3 rounded-2xl rounded-tl-none bg-gray-50 dark:bg-gray-800 border border-gray-200/50 dark:border-gray-700/50 flex gap-1 items-center">
                     <motion.div
                       animate={!prefersReduced ? { scale: [0.8, 1, 0.8] } : { scale: 1 }}
                       transition={!prefersReduced ? { repeat: Infinity, duration: 0.6, delay: 0 } : { duration: 0 }}
@@ -311,7 +311,7 @@ Please provide a helpful, engaging, and professional response to the user's ques
                       }}
                       whileHover={{ scale: 1.05, y: -2 }}
                       whileTap={{ scale: 0.95 }}
-                      className="text-xs px-3 py-1.5 rounded-full bg-linear-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-700 dark:text-blue-300 border border-blue-200/50 dark:border-blue-700/50 hover:border-blue-400/50 dark:hover:border-blue-500/50 transition-all duration-200 font-medium"
+                      className="text-xs px-3 py-1.5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-200/50 dark:border-blue-700/50 hover:border-blue-400/50 dark:hover:border-blue-500/50 transition-all duration-200 font-medium"
                     >
                       {question}
                     </motion.button>
@@ -339,7 +339,7 @@ Please provide a helpful, engaging, and professional response to the user's ques
                 disabled={!input.trim() || isTyping}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="p-2.5 bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                className="p-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <motion.div
                   animate={!prefersReduced && input.trim() && !isTyping ? { x: [0, 2, 0] } : { x: 0 }}

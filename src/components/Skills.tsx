@@ -121,17 +121,17 @@ const Skills = () => {
 
   return (
     <section id="skills" className="relative py-20 md:py-32 overflow-hidden" aria-labelledby="skills-heading" ref={skillsRef}>
-      <div className="absolute inset-0 bg-linear-to-br from-white via-blue-50/20 to-purple-50/20 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10" aria-hidden="true"></div>
+      <div className="absolute inset-0 bg-white dark:bg-gray-950" aria-hidden="true"></div>
 
       <motion.div
-        className="absolute top-10 left-10 w-72 h-72 bg-linear-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl dark:from-blue-600/10 dark:to-purple-600/10"
+        className="absolute top-10 left-10 w-72 h-72 bg-blue-400/15 rounded-full blur-3xl dark:bg-blue-600/10"
         animate={!prefersReduced && skillsInView ? { x: [0, 24, 0], y: [0, -24, 0] } : { x: 0, y: 0 }}
         transition={!prefersReduced && skillsInView ? { duration: 8, repeat: Infinity, ease: 'easeInOut' } : { duration: 0 }}
         aria-hidden="true"
       ></motion.div>
 
       <motion.div
-        className="absolute bottom-10 right-10 w-72 h-72 bg-linear-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl dark:from-purple-600/10 dark:to-pink-600/10"
+        className="absolute bottom-10 right-10 w-72 h-72 bg-purple-400/15 rounded-full blur-3xl dark:bg-purple-600/10"
         animate={!prefersReduced && skillsInView ? { x: [0, -24, 0], y: [0, 24, 0] } : { x: 0, y: 0 }}
         transition={!prefersReduced && skillsInView ? { duration: 10, repeat: Infinity, ease: 'easeInOut' } : { duration: 0 }}
         aria-hidden="true"
@@ -146,12 +146,12 @@ const Skills = () => {
           className="text-center mb-16"
         >
           <h2 id="skills-heading" className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
-            <span className="block bg-linear-to-r from-gray-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+            <span className="block text-gray-900 dark:text-white">
               Professional Skills
             </span>
           </h2>
           <motion.div
-            className="h-1 bg-linear-to-r from-blue-600 via-purple-600 to-pink-600 w-24 mx-auto rounded-full"
+            className="h-1 bg-blue-600 w-24 mx-auto rounded-full"
             initial={{ width: 0 }}
             whileInView={{ width: 96 }}
             viewport={{ once: true }}
@@ -178,12 +178,12 @@ const Skills = () => {
                 className="group relative rounded-2xl border border-gray-200/60 dark:border-gray-700/60 bg-white/70 dark:bg-gray-800/50 backdrop-blur-sm p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 <motion.div
-                  className="absolute -inset-px rounded-2xl bg-linear-to-r from-blue-500/0 via-blue-500/0 to-purple-500/0 group-hover:from-blue-500/15 group-hover:via-transparent group-hover:to-purple-500/15 transition-all duration-500 pointer-events-none"
+                  className="absolute -inset-px rounded-2xl bg-blue-500/0 group-hover:bg-blue-500/10 transition-all duration-500 pointer-events-none"
                   aria-hidden="true"
                 ></motion.div>
 
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-lg bg-linear-to-r from-blue-600 to-purple-600 text-white flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-blue-600 text-white flex items-center justify-center">
                     <Icon className="w-5 h-5" />
                   </div>
                   <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{category.title}</h3>

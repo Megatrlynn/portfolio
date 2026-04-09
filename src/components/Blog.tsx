@@ -28,10 +28,10 @@ interface BlogPost {
 const categories = ['All', 'Software', 'Hardware', 'Cybersecurity'];
 
 const categoryColors: { [key: string]: string } = {
-  'Software': 'from-blue-500 to-cyan-500',
-  'Hardware': 'from-purple-500 to-pink-500',
-  'Cybersecurity': 'from-orange-500 to-red-500',
-  'All': 'from-blue-500 to-purple-500',
+  'Software': 'bg-blue-500',
+  'Hardware': 'bg-purple-500',
+  'Cybersecurity': 'bg-orange-500',
+  'All': 'bg-blue-600',
 };
 
 const Blog = () => {
@@ -158,18 +158,18 @@ const Blog = () => {
   return (
     <section id="blog" className="relative py-20 md:py-32 overflow-hidden" aria-labelledby="blog-heading" ref={blogRef}>
       {/* Background */}
-      <div className="absolute inset-0 bg-linear-to-br from-white via-blue-50/20 to-purple-50/20 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10" aria-hidden="true"></div>
+      <div className="absolute inset-0 bg-white dark:bg-gray-950" aria-hidden="true"></div>
 
       {/* Animated Background Elements */}
       <motion.div
-        className="absolute top-20 right-10 w-72 h-72 bg-linear-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl dark:from-blue-600/10 dark:to-purple-600/10"
+        className="absolute top-20 right-10 w-72 h-72 bg-blue-400/15 rounded-full blur-3xl dark:bg-blue-600/10"
         animate={!prefersReduced && blogInView ? { x: [0, 30, 0], y: [0, -30, 0] } : { x: 0, y: 0 }}
         transition={!prefersReduced && blogInView ? { duration: 8, repeat: Infinity, ease: "easeInOut" } : { duration: 0 }}
         aria-hidden="true"
       ></motion.div>
 
       <motion.div
-        className="absolute bottom-10 left-10 w-72 h-72 bg-linear-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl dark:from-purple-600/10 dark:to-pink-600/10"
+        className="absolute bottom-10 left-10 w-72 h-72 bg-purple-400/15 rounded-full blur-3xl dark:bg-purple-600/10"
         animate={!prefersReduced && blogInView ? { x: [0, -30, 0], y: [0, 30, 0] } : { x: 0, y: 0 }}
         transition={!prefersReduced && blogInView ? { duration: 10, repeat: Infinity, ease: "easeInOut" } : { duration: 0 }}
         aria-hidden="true"
@@ -185,12 +185,12 @@ const Blog = () => {
           className="text-center mb-16"
         >
           <h2 id="blog-heading" className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
-            <span className="block bg-linear-to-r from-gray-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+            <span className="block text-gray-900 dark:text-white">
               Latest Articles
             </span>
           </h2>
           <motion.div
-            className="h-1 bg-linear-to-r from-blue-600 via-purple-600 to-pink-600 w-24 mx-auto rounded-full"
+            className="h-1 bg-blue-600 w-24 mx-auto rounded-full"
             initial={{ width: 0 }}
             whileInView={{ width: 96 }}
             viewport={{ once: true }}
@@ -230,11 +230,11 @@ const Blog = () => {
               {activeCategory === category && (
                 <motion.div
                   layoutId="activeCategory"
-                  className={`absolute inset-0 bg-linear-to-r ${categoryColors[category]} -z-10`}
+                  className={`absolute inset-0 ${categoryColors[category]} -z-10`}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 ></motion.div>
               )}
-              <div className={`absolute inset-0 bg-linear-to-r ${categoryColors[category]} opacity-0 group-hover:opacity-10 transition-opacity duration-300 -z-10`}></div>
+              <div className={`absolute inset-0 ${categoryColors[category]} opacity-0 group-hover:opacity-10 transition-opacity duration-300 -z-10`}></div>
               <span className="relative flex items-center gap-2">
                 {category}
               </span>
@@ -299,7 +299,7 @@ const Blog = () => {
                   {/* Card Content */}
                   <div className="relative bg-white dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 h-full flex flex-col border border-gray-200/50 dark:border-gray-700/50 group-hover:border-blue-400/50 dark:group-hover:border-blue-500/50 transition-all duration-300 shadow-lg group-hover:shadow-xl">
                     {/* Image Placeholder */}
-                    <div className="relative h-40 mb-4 rounded-xl overflow-hidden bg-linear-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30">
+                    <div className="relative h-40 mb-4 rounded-xl overflow-hidden bg-blue-100 dark:bg-blue-900/30">
                       {post.imageUrl ? (
                         <img
                           src={post.imageUrl}
@@ -322,7 +322,7 @@ const Blog = () => {
                     <div className="flex items-center gap-2 mb-3">
                       <motion.span
                         whileHover={{ scale: 1.1 }}
-                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-linear-to-r ${categoryColors[post.category] || categoryColors['All']} text-white text-xs font-semibold`}
+                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg ${categoryColors[post.category] || categoryColors['All']} text-white text-xs font-semibold`}
                       >
                         <FiTag className="w-3 h-3" />
                         {post.category}
@@ -424,7 +424,7 @@ const Blog = () => {
                     </div>
                   )}
                   <div className="flex flex-wrap items-center gap-2 mb-3">
-                    <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-linear-to-r ${categoryColors[selectedPost.category] || categoryColors.All} text-white text-xs font-semibold`}>
+                    <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg ${categoryColors[selectedPost.category] || categoryColors.All} text-white text-xs font-semibold`}>
                       <FiTag className="w-3 h-3" />
                       {selectedPost.category}
                     </span>
@@ -483,7 +483,7 @@ const Blog = () => {
                         {selectedPost.tools.map((tool) => (
                           <span
                             key={`tool-${selectedPost.id}-${tool}`}
-                            className="px-3 py-1.5 text-xs font-medium rounded-lg bg-linear-to-r from-blue-50 to-purple-50 dark:from-blue-900/30 dark:to-purple-900/30 text-gray-700 dark:text-gray-300 border border-blue-200/50 dark:border-blue-700/50"
+                            className="px-3 py-1.5 text-xs font-medium rounded-lg bg-blue-50 dark:bg-blue-900/30 text-gray-700 dark:text-gray-300 border border-blue-200/50 dark:border-blue-700/50"
                           >
                             {tool}
                           </span>

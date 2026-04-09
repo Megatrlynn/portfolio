@@ -742,9 +742,9 @@ const Vault = () => {
 
   if (loading) {
     return (
-      <div className="relative min-h-screen flex items-center justify-center bg-linear-to-br from-gray-950 via-blue-950/20 to-purple-950/20 text-white overflow-hidden">
+      <div className="relative min-h-screen flex items-center justify-center bg-gray-950 text-white overflow-hidden">
         <motion.div
-          className="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-linear-to-br from-blue-500/15 to-purple-500/15 blur-3xl"
+          className="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-blue-500/15 blur-3xl"
           animate={!prefersReduced ? { x: [0, 25, 0], y: [0, -20, 0] } : { x: 0, y: 0 }}
           transition={!prefersReduced ? { duration: 7, repeat: Infinity, ease: 'easeInOut' } : { duration: 0 }}
         ></motion.div>
@@ -769,7 +769,7 @@ const Vault = () => {
 
   if (adminCheckDone && !isAdmin) {
     return (
-      <section className="relative min-h-screen overflow-hidden py-10 px-4 sm:px-6 lg:px-8 bg-linear-to-br from-slate-50 via-blue-50/25 to-purple-50/20 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10 text-gray-900 dark:text-white">
+      <section className="relative min-h-screen overflow-hidden py-10 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-gray-950 text-gray-900 dark:text-white">
         <div className="relative z-10 max-w-3xl mx-auto">
           <div className="rounded-2xl border border-gray-200/60 dark:border-gray-700/60 bg-white/80 dark:bg-gray-900/70 backdrop-blur-xl p-8 md:p-10 shadow-xl text-center">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide uppercase bg-red-100/80 dark:bg-red-900/30 text-red-700 dark:text-red-300 border border-red-200/70 dark:border-red-700/40 mb-4">
@@ -797,7 +797,7 @@ const Vault = () => {
                 onClick={handleLogout}
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-white bg-linear-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 shadow-lg transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-white bg-red-600 hover:bg-red-700 shadow-lg transition-all cursor-pointer"
               >
                 <FiLogOut className="w-4 h-4" />
                 Logout
@@ -810,14 +810,14 @@ const Vault = () => {
   }
 
   return (
-    <section className="relative min-h-screen overflow-hidden py-10 px-4 sm:px-6 lg:px-8 bg-linear-to-br from-slate-50 via-blue-50/25 to-purple-50/20 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10 text-gray-900 dark:text-white">
+    <section className="relative min-h-screen overflow-hidden py-10 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-gray-950 text-gray-900 dark:text-white">
       <motion.div
-        className="absolute -top-24 left-0 w-96 h-96 rounded-full bg-linear-to-br from-blue-500/20 to-purple-500/20 blur-3xl dark:from-blue-500/10 dark:to-purple-500/10"
+        className="absolute -top-24 left-0 w-96 h-96 rounded-full bg-blue-500/20 blur-3xl dark:bg-blue-500/10"
         animate={!prefersReduced ? { x: [0, 30, 0], y: [0, -20, 0] } : { x: 0, y: 0 }}
         transition={!prefersReduced ? { duration: 9, repeat: Infinity, ease: 'easeInOut' } : { duration: 0 }}
       ></motion.div>
       <motion.div
-        className="absolute -bottom-20 right-0 w-96 h-96 rounded-full bg-linear-to-br from-pink-500/15 to-indigo-500/20 blur-3xl dark:from-pink-500/10 dark:to-indigo-500/10"
+        className="absolute -bottom-20 right-0 w-96 h-96 rounded-full bg-pink-500/15 blur-3xl dark:bg-pink-500/10"
         animate={!prefersReduced ? { x: [0, -25, 0], y: [0, 20, 0] } : { x: 0, y: 0 }}
         transition={!prefersReduced ? { duration: 11, repeat: Infinity, ease: 'easeInOut' } : { duration: 0 }}
       ></motion.div>
@@ -839,7 +839,7 @@ const Vault = () => {
                   <FiShield className="w-3.5 h-3.5" />
                   Secure Dashboard - Admin Verified
                 </div>
-                <h1 className="text-3xl md:text-4xl font-black tracking-tight bg-linear-to-r from-gray-900 via-blue-700 to-purple-700 dark:from-white dark:via-blue-300 dark:to-purple-300 bg-clip-text text-transparent">
+                <h1 className="text-3xl md:text-4xl font-black tracking-tight text-gray-900 dark:text-white">
                   Admin Vault
                 </h1>
                 <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 max-w-xl">
@@ -861,7 +861,7 @@ const Vault = () => {
                   onClick={handleLogout}
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-white bg-linear-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 shadow-lg transition-all cursor-pointer"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-white bg-red-600 hover:bg-red-700 shadow-lg transition-all cursor-pointer"
                 >
                   <FiLogOut className="w-4 h-4" />
                   Logout
@@ -889,7 +889,7 @@ const Vault = () => {
                   {isActive && (
                     <motion.span
                       layoutId="vault-active-tab"
-                      className="absolute inset-0 rounded-xl bg-linear-to-r from-blue-600 via-purple-600 to-pink-600"
+                      className="absolute inset-0 rounded-xl bg-blue-600"
                       transition={{ type: 'spring', stiffness: 280, damping: 30 }}
                     ></motion.span>
                   )}
@@ -939,7 +939,7 @@ const Vault = () => {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: index * 0.04, duration: 0.3 }}
                           whileHover={{ y: -2 }}
-                          className="rounded-xl border border-gray-200/70 dark:border-gray-700/70 bg-linear-to-br from-white to-blue-50/30 dark:from-gray-900/70 dark:to-blue-900/10 p-5 shadow-sm"
+                          className="rounded-xl border border-gray-200/70 dark:border-gray-700/70 bg-white dark:bg-gray-900/70 p-5 shadow-sm"
                         >
                           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 mb-3">
                             <div>
@@ -1014,9 +1014,9 @@ const Vault = () => {
                                         loading="lazy"
                                       />
                                     ) : (
-                                      <div className="absolute inset-0 bg-linear-to-br from-blue-600 via-indigo-600 to-cyan-500" />
+                                      <div className="absolute inset-0 bg-blue-600" />
                                     )}
-                                    <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/20 to-transparent" />
+                                    <div className="absolute inset-0 bg-black/60" />
                                     <div className="absolute inset-x-0 bottom-0 p-5 text-white">
                                       <div className="flex flex-wrap items-center gap-2">
                                         <span className="inline-flex items-center gap-1 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold backdrop-blur-sm">
@@ -1318,7 +1318,7 @@ const Vault = () => {
                         disabled={projectStatus === 'submitting'}
                         whileHover={{ y: -2 }}
                         whileTap={{ scale: 0.98 }}
-                        className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-white bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg transition disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 shadow-lg transition disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
                       >
                         <FiSend className="w-4 h-4" />
                         {projectStatus === 'submitting' ? 'Saving...' : editingProjectId ? 'Update Project' : 'Publish Project'}
@@ -1460,9 +1460,9 @@ const Vault = () => {
                                         loading="lazy"
                                       />
                                     ) : (
-                                      <div className="absolute inset-0 bg-linear-to-br from-pink-600 via-fuchsia-600 to-orange-500" />
+                                      <div className="absolute inset-0 bg-pink-600" />
                                     )}
-                                    <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/20 to-transparent" />
+                                    <div className="absolute inset-0 bg-black/60" />
                                     <div className="absolute inset-x-0 bottom-0 p-5 text-white">
                                       <div className="flex flex-wrap items-center gap-2">
                                         <span className="inline-flex items-center gap-1 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold backdrop-blur-sm">
@@ -1741,7 +1741,7 @@ const Vault = () => {
                         disabled={blogStatus === 'submitting'}
                         whileHover={{ y: -2 }}
                         whileTap={{ scale: 0.98 }}
-                        className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-white bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg transition disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-white bg-purple-600 hover:bg-purple-700 shadow-lg transition disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
                       >
                         <FiSend className="w-4 h-4" />
                         {blogStatus === 'submitting' ? 'Saving...' : editingArticleId ? 'Update Article' : 'Publish Article'}
@@ -1870,7 +1870,7 @@ const Vault = () => {
                         disabled={externalCvStatus === 'submitting'}
                         whileHover={{ y: -2 }}
                         whileTap={{ scale: 0.98 }}
-                        className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-white bg-linear-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 shadow-lg transition disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-white bg-indigo-600 hover:bg-indigo-700 shadow-lg transition disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
                       >
                         <FiExternalLink className="w-4 h-4" />
                         {externalCvStatus === 'submitting' ? 'Saving URL...' : 'Save External CV URL'}
@@ -1892,7 +1892,7 @@ const Vault = () => {
                     </div>
                   </form>
 
-                  <div className="rounded-xl border border-gray-200/70 dark:border-gray-700/70 bg-linear-to-br from-white to-blue-50/30 dark:from-gray-900/70 dark:to-blue-900/10 p-5 shadow-sm">
+                  <div className="rounded-xl border border-gray-200/70 dark:border-gray-700/70 bg-white dark:bg-gray-900/70 p-5 shadow-sm">
                     <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">Current public CV:</p>
                     {currentCvUrl ? (
                       <a

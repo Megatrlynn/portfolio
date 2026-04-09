@@ -195,7 +195,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed w-full z-40 bg-linear-to-b from-white via-white/95 to-white/90 dark:from-gray-950 dark:via-gray-900/95 dark:to-gray-900/90 backdrop-blur-xl shadow-lg dark:shadow-2xl transition-all duration-300 border-b border-gray-100/50 dark:border-gray-800/50">
+      <nav className="fixed w-full z-40 bg-white/95 dark:bg-gray-950/95 backdrop-blur-xl shadow-lg dark:shadow-2xl transition-all duration-300 border-b border-gray-100/50 dark:border-gray-800/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
@@ -206,11 +206,11 @@ const Navbar = () => {
               className="shrink-0"
             >
               <div className="relative group cursor-pointer">
-                <div className="absolute -inset-1 bg-linear-to-r from-orange-500/60 via-amber-400/60 to-blue-500/60 rounded-xl blur opacity-60 group-hover:opacity-90 transition duration-500"></div>
+                <div className="absolute -inset-1 bg-orange-500/20 rounded-xl blur opacity-60 group-hover:opacity-90 transition duration-500"></div>
                 <div className="relative px-3 py-2.5 bg-white dark:bg-gray-950 rounded-xl border border-gray-200/60 dark:border-gray-800/60 overflow-hidden">
                   <motion.div
                     aria-hidden="true"
-                    className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 bg-linear-to-r from-transparent via-orange-300/70 to-transparent dark:via-amber-300/40"
+                    className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 bg-orange-300/40 dark:bg-amber-300/20"
                     initial={{ x: '-180%' }}
                     animate={{ x: ['-180%', '460%'] }}
                     transition={{ duration: 4.8, ease: 'linear', repeat: Infinity }}
@@ -221,7 +221,7 @@ const Navbar = () => {
                       initial={{ scale: 0.85, opacity: 0, rotate: -8 }}
                       animate={{ scale: [1, 1.018], opacity: 1, rotate: [0, -1] }}
                       transition={{ duration: 3.2, delay: 0.1, ease: 'easeInOut', repeat: Infinity, repeatType: 'mirror' }}
-                      className="grid h-8 w-8 place-items-center rounded-lg bg-linear-to-br from-orange-500 to-amber-500 text-white shadow-md"
+                      className="grid h-8 w-8 place-items-center rounded-lg bg-orange-500 text-white shadow-md"
                     >
                       <span className="text-[11px] font-extrabold tracking-wide">TF</span>
                     </motion.div>
@@ -234,13 +234,7 @@ const Navbar = () => {
                         className="block font-black text-lg sm:text-xl tracking-tight"
                       >
                         <motion.span
-                          className="bg-clip-text text-transparent"
-                          style={{
-                            backgroundImage: 'linear-gradient(115deg, #f97316, #f59e0b, #ef4444, #f59e0b, #f97316)',
-                            backgroundSize: '220% 220%',
-                          }}
-                          animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
-                          transition={{ duration: 7.5, ease: 'linear', repeat: Infinity }}
+                          className="text-orange-500"
                         >
                           TitanForge
                         </motion.span>
@@ -284,30 +278,30 @@ const Navbar = () => {
                         <motion.div
                           layoutId="activeDesktopNav"
                           transition={{ type: 'spring', stiffness: 360, damping: 34 }}
-                          className="absolute inset-0 rounded-lg bg-linear-to-r from-blue-500/12 via-blue-500/18 to-purple-500/12"
+                          className="absolute inset-0 rounded-lg bg-blue-100/70 dark:bg-blue-900/40"
                         ></motion.div>
                       )}
                       <div className={`absolute inset-0 rounded-lg transition-opacity duration-300 ${
                         isActive
-                          ? 'opacity-0'
-                          : 'bg-linear-to-r from-blue-500/0 via-blue-500/10 to-purple-500/0 opacity-0 group-hover:opacity-100'
+                            ? 'opacity-0'
+                            : 'bg-blue-50/70 dark:bg-gray-800/50 opacity-0 group-hover:opacity-100'
                       }`}></div>
                       <span className="relative z-10">{link.name}</span>
                       {isActive ? (
                         <motion.span
                           layoutId="activeDesktopUnderline"
                           transition={{ type: 'spring', stiffness: 360, damping: 34 }}
-                          className="absolute left-3 right-3 -bottom-0.5 h-0.5 rounded-full bg-linear-to-r from-blue-600 to-purple-600"
+                          className="absolute left-3 right-3 -bottom-0.5 h-0.5 rounded-full bg-blue-600"
                         ></motion.span>
                       ) : (
-                        <span className="absolute left-3 right-3 -bottom-0.5 h-0.5 rounded-full bg-linear-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                        <span className="absolute left-3 right-3 -bottom-0.5 h-0.5 rounded-full bg-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                       )}
                     </motion.a>
                   );
                 })}
 
                 {/* Divider */}
-                <div className="w-px h-6 bg-linear-to-b from-transparent via-gray-300 dark:via-gray-600 to-transparent mx-2"></div>
+                <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-2"></div>
 
                 {/* Theme Toggle */}
                 <motion.button
@@ -354,7 +348,7 @@ const Navbar = () => {
                   whileTap="tap"
                   className="relative p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-300 text-gray-700 dark:text-gray-300 cursor-pointer group overflow-hidden"
                 >
-                  <div className="absolute inset-0 bg-linear-to-r from-amber-400/0 via-amber-400/20 to-amber-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute inset-0 bg-amber-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <FiLock size={18} className="relative z-10" />
                 </motion.button>
               </div>
@@ -407,7 +401,7 @@ const Navbar = () => {
           initial="closed"
           animate={isOpen ? "open" : "closed"}
           variants={mobileMenuVariants}
-          className="md:hidden bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 border-t border-gray-100 dark:border-gray-800"
+          className="md:hidden bg-white dark:bg-gray-950 border-t border-gray-100 dark:border-gray-800"
         >
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navLinks.map((link, i) => {
@@ -424,15 +418,15 @@ const Navbar = () => {
                   onClick={(event) => handleNavClick(event, link.id)}
                   className={`relative group block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 ${
                     isActive
-                      ? 'text-blue-600 dark:text-blue-400 bg-linear-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10'
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-linear-to-r hover:from-blue-500/10 hover:via-purple-500/10 hover:to-pink-500/10 hover:text-blue-600 dark:hover:text-blue-400'
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-100/70 dark:bg-blue-900/40'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-blue-50/70 dark:hover:bg-gray-800/50 hover:text-blue-600 dark:hover:text-blue-400'
                   }`}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="activeMobileNav"
                       transition={{ type: 'spring', stiffness: 360, damping: 34 }}
-                      className="absolute inset-0 rounded-lg bg-linear-to-r from-blue-500/12 via-purple-500/12 to-pink-500/12"
+                      className="absolute inset-0 rounded-lg bg-blue-100/70 dark:bg-blue-900/40"
                     ></motion.div>
                   )}
                   <span className="relative z-10">{link.name}</span>
@@ -457,10 +451,10 @@ const Navbar = () => {
               animate={{ scale: 1, y: 0, opacity: 1 }}
               exit={{ scale: 0.95, y: 20, opacity: 0 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative bg-linear-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-200/50 dark:border-gray-800/50 overflow-hidden"
+              className="relative bg-white dark:bg-gray-950 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-200/50 dark:border-gray-800/50 overflow-hidden"
             >
-              {/* Background gradient effect */}
-              <div className="absolute top-0 right-0 w-40 h-40 bg-linear-to-br from-blue-500/10 to-purple-500/10 rounded-full blur-3xl -z-10"></div>
+              {/* Background accent */}
+              <div className="absolute top-0 right-0 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl -z-10"></div>
 
               {/* Close Button */}
               <motion.button
@@ -477,7 +471,7 @@ const Navbar = () => {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="text-3xl font-bold bg-linear-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-2 text-center"
+                className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2 text-center"
               >
                 Access Vault
               </motion.h2>
@@ -547,7 +541,7 @@ const Navbar = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   type="submit"
-                  className="w-full py-3 px-6 bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer relative overflow-hidden group"
+                  className="w-full py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer relative overflow-hidden group"
                 >
                   <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                   <span className="relative">Enter Vault</span>

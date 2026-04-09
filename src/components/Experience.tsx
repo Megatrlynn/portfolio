@@ -126,18 +126,18 @@ const Experience = () => {
   return (
     <section id="experience" className="relative py-20 md:py-32 overflow-hidden" aria-labelledby="experience-heading" ref={experienceRef}>
       {/* Background */}
-      <div className="absolute inset-0 bg-linear-to-br from-white via-blue-50/20 to-purple-50/20 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10" aria-hidden="true"></div>
+      <div className="absolute inset-0 bg-white dark:bg-gray-950" aria-hidden="true"></div>
 
       {/* Animated Background Elements */}
       <motion.div
-        className="absolute top-10 right-10 w-72 h-72 bg-linear-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl dark:from-blue-600/10 dark:to-purple-600/10"
+        className="absolute top-10 right-10 w-72 h-72 bg-blue-400/15 rounded-full blur-3xl dark:bg-blue-600/10"
         animate={!prefersReduced && experienceInView ? { x: [0, 30, 0], y: [0, -30, 0] } : { x: 0, y: 0 }}
         transition={!prefersReduced && experienceInView ? { duration: 8, repeat: Infinity, ease: "easeInOut" } : { duration: 0 }}
         aria-hidden="true"
       ></motion.div>
 
       <motion.div
-        className="absolute bottom-10 left-10 w-72 h-72 bg-linear-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl dark:from-purple-600/10 dark:to-pink-600/10"
+        className="absolute bottom-10 left-10 w-72 h-72 bg-purple-400/15 rounded-full blur-3xl dark:bg-purple-600/10"
         animate={!prefersReduced && experienceInView ? { x: [0, -30, 0], y: [0, 30, 0] } : { x: 0, y: 0 }}
         transition={!prefersReduced && experienceInView ? { duration: 10, repeat: Infinity, ease: "easeInOut" } : { duration: 0 }}
         aria-hidden="true"
@@ -153,12 +153,12 @@ const Experience = () => {
           className="text-center mb-16"
         >
           <h2 id="experience-heading" className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
-            <span className="block bg-linear-to-r from-gray-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+            <span className="block text-gray-900 dark:text-white">
               Experience & Education
             </span>
           </h2>
           <motion.div
-            className="h-1 bg-linear-to-r from-blue-600 via-purple-600 to-pink-600 w-24 mx-auto rounded-full"
+            className="h-1 bg-blue-600 w-24 mx-auto rounded-full"
             initial={{ width: 0 }}
             whileInView={{ width: 96 }}
             viewport={{ once: true }}
@@ -177,7 +177,7 @@ const Experience = () => {
         <div className="relative">
           {/* Timeline Line */}
           <motion.div
-            className="absolute left-4 md:left-1/2 top-0 bottom-0 w-1 bg-linear-to-b from-blue-600 via-purple-600 to-pink-600 rounded-full"
+            className="absolute left-4 md:left-1/2 top-0 bottom-0 w-1 bg-blue-600 rounded-full"
             initial={{ height: 0 }}
             whileInView={{ height: "100%" }}
             viewport={{ once: true }}
@@ -216,7 +216,7 @@ const Experience = () => {
                         className="group cursor-pointer"
                       >
                         <motion.div
-                          className="absolute inset-0 bg-linear-to-br from-blue-500/0 via-purple-500/0 to-pink-500/0 group-hover:from-blue-500/10 group-hover:via-purple-500/10 group-hover:to-pink-500/10 transition-all duration-300 rounded-2xl -z-10"
+                          className="absolute inset-0 bg-blue-50/0 group-hover:bg-blue-50/80 dark:group-hover:bg-blue-900/20 transition-all duration-300 rounded-2xl -z-10"
                         ></motion.div>
                         <motion.div
                           layout
@@ -225,7 +225,7 @@ const Experience = () => {
                           className="bg-white dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-200/50 dark:border-gray-700/50 group-hover:border-blue-400/50 dark:group-hover:border-blue-500/50 shadow-lg group-hover:shadow-2xl transition-all duration-300 overflow-hidden"
                         >
                           <div className="p-6 md:p-8">
-                            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-linear-to-r from-blue-50 to-purple-50 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-600 dark:text-blue-400 text-sm font-semibold mb-3">
+                            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-semibold mb-3">
                               {item.type === 'work' ? <FiBriefcase className="w-4 h-4" /> : <FiBookOpen className="w-4 h-4" />}
                               {item.type === 'work' ? 'Work' : 'Education'}
                             </div>
@@ -269,7 +269,7 @@ const Experience = () => {
                     viewport={{ once: true }}
                     className="relative flex items-center justify-center"
                   >
-                    <div className="w-12 h-12 rounded-full bg-linear-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white shadow-xl border-4 border-white dark:border-gray-950 z-20">
+                    <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white shadow-xl border-4 border-white dark:border-gray-950 z-20">
                       {item.type === 'work' ? (
                         <FiBriefcase className="w-6 h-6" />
                       ) : (
@@ -289,7 +289,7 @@ const Experience = () => {
                         className="group cursor-pointer"
                       >
                         <motion.div
-                          className="absolute inset-0 bg-linear-to-br from-blue-500/0 via-purple-500/0 to-pink-500/0 group-hover:from-blue-500/10 group-hover:via-purple-500/10 group-hover:to-pink-500/10 transition-all duration-300 rounded-2xl -z-10"
+                          className="absolute inset-0 bg-blue-50/0 group-hover:bg-blue-50/80 dark:group-hover:bg-blue-900/20 transition-all duration-300 rounded-2xl -z-10"
                         ></motion.div>
                         <motion.div
                           layout
@@ -298,7 +298,7 @@ const Experience = () => {
                           className="bg-white dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-200/50 dark:border-gray-700/50 group-hover:border-blue-400/50 dark:group-hover:border-blue-500/50 shadow-lg group-hover:shadow-2xl transition-all duration-300 overflow-hidden"
                         >
                           <div className="p-6 md:p-8">
-                            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-linear-to-r from-blue-50 to-purple-50 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-600 dark:text-blue-400 text-sm font-semibold mb-3">
+                            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-semibold mb-3">
                               {item.type === 'work' ? <FiBriefcase className="w-4 h-4" /> : <FiBookOpen className="w-4 h-4" />}
                               {item.type === 'work' ? 'Work' : 'Education'}
                             </div>
@@ -343,7 +343,7 @@ const Experience = () => {
                     transition={{ delay: index * 0.15 + 0.2 }}
                     className="group cursor-pointer"
                   >
-                    <div className="absolute -left-6 mt-1.5 w-10 h-10 rounded-full bg-linear-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white shadow-xl border-4 border-white dark:border-gray-950 z-20">
+                    <div className="absolute -left-6 mt-1.5 w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white shadow-xl border-4 border-white dark:border-gray-950 z-20">
                       {item.type === 'work' ? (
                         <FiBriefcase className="w-5 h-5" />
                       ) : (
@@ -351,15 +351,15 @@ const Experience = () => {
                       )}
                     </div>
 
-                    <div className="absolute inset-0 bg-linear-to-br from-blue-500/0 via-purple-500/0 to-pink-500/0 group-hover:from-blue-500/10 group-hover:via-purple-500/10 group-hover:to-pink-500/10 transition-all duration-300 rounded-2xl -z-10"></div>
+                    <div className="absolute inset-0 bg-blue-50/0 group-hover:bg-blue-50/80 dark:group-hover:bg-blue-900/20 transition-all duration-300 rounded-2xl -z-10"></div>
                     <motion.div
                       layout
                       whileHover={{ scale: 1.02, y: -3 }}
                       transition={{ duration: 0.25, ease: 'easeOut' }}
-                      className="bg-white dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-200/50 dark:border-gray-700/50 group-hover:border-blue-400/50 dark:group-hover:border-blue-500/50 shadow-lg group-hover:shadow-xl transition-all duration-300 overflow-hidden"
+                        className="bg-white dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-200/50 dark:border-gray-700/50 group-hover:border-blue-400/50 dark:group-hover:border-blue-500/50 shadow-lg group-hover:shadow-xl transition-all duration-300 overflow-hidden"
                     >
                       <div className="p-6">
-                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-linear-to-r from-blue-50 to-purple-50 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-600 dark:text-blue-400 text-sm font-semibold mb-3">
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-semibold mb-3">
                           {item.type === 'work' ? <FiBriefcase className="w-4 h-4" /> : <FiBookOpen className="w-4 h-4" />}
                           {item.type === 'work' ? 'Work' : 'Education'}
                         </div>

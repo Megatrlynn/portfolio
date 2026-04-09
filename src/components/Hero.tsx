@@ -42,11 +42,11 @@ const Hero = () => {
   return (
     <header id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20" role="banner" ref={heroRef}>
       {/* Animated Background */}
-      <div className="absolute inset-0 bg-linear-to-br from-white via-blue-50/30 to-purple-50/30 dark:from-gray-950 dark:via-blue-950/20 dark:to-purple-950/20 z-0" aria-hidden="true"></div>
+      <div className="absolute inset-0 bg-white dark:bg-gray-950 z-0" aria-hidden="true"></div>
 
       {/* Animated Gradient Orbs */}
       <motion.div
-        className="absolute top-20 -left-40 w-80 h-80 bg-linear-to-br from-blue-400/30 to-purple-400/30 rounded-full blur-3xl dark:from-blue-600/20 dark:to-purple-600/20"
+        className="absolute top-20 -left-40 w-80 h-80 bg-blue-400/20 rounded-full blur-3xl dark:bg-blue-600/10"
         animate={!prefersReduced && heroInView ? {
           x: [0, 50, 0],
           y: [0, 40, 0],
@@ -60,7 +60,7 @@ const Hero = () => {
       ></motion.div>
 
       <motion.div
-        className="absolute bottom-20 -right-40 w-80 h-80 bg-linear-to-br from-purple-400/30 to-pink-400/30 rounded-full blur-3xl dark:from-purple-600/20 dark:to-pink-600/20"
+        className="absolute bottom-20 -right-40 w-80 h-80 bg-purple-400/20 rounded-full blur-3xl dark:bg-purple-600/10"
         animate={!prefersReduced && heroInView ? {
           x: [0, -50, 0],
           y: [0, -40, 0],
@@ -86,10 +86,10 @@ const Hero = () => {
           className="mb-8 flex justify-center"
         >
           <motion.div
-            className="inline-flex items-center px-4 py-2 rounded-full bg-linear-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border border-blue-300/30 dark:border-blue-600/30 backdrop-blur-md"
+            className="inline-flex items-center px-4 py-2 rounded-full bg-blue-50/80 border border-blue-200/40 dark:bg-gray-800 dark:border-gray-700 backdrop-blur-md"
             whileHover={{ scale: 1.05 }}
           >
-            <span className="text-sm font-medium bg-linear-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+            <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
               🔥 Welcome to TitanForge [My Personal Portfolio]
             </span>
           </motion.div>
@@ -107,7 +107,7 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              <span className="block bg-linear-to-r from-gray-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+              <span className="block text-gray-900 dark:text-white">
                 Hi, I'm Raymond IGABINEZA
               </span>
             </motion.h1>
@@ -116,7 +116,7 @@ const Hero = () => {
 
           {/* Animated Underline */}
           <motion.div
-            className="h-1 bg-linear-to-r from-blue-600 via-purple-600 to-pink-600 mx-auto rounded-full"
+            className="h-1 bg-blue-600 mx-auto rounded-full"
             initial={{ width: 0 }}
             animate={{ width: 120 }}
             transition={{ duration: 0.8, delay: 0.6 }}
@@ -129,7 +129,7 @@ const Hero = () => {
           className="text-xl md:text-2xl lg:text-3xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-2xl mx-auto"
         >
           Forging Software, Hardware, and Intelligence with{' '}
-          <span className="font-semibold bg-linear-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+          <span className="font-semibold text-blue-600 dark:text-blue-400">
             Full-Stack Development, Embedded Systems, AI, Networking, and IoT.
           </span>
         </motion.p>
@@ -153,7 +153,7 @@ const Hero = () => {
               custom={i}
               variants={badgeVariants}
               whileHover={{ scale: 1.1, y: -5 }}
-              className="px-4 py-2 rounded-lg bg-linear-to-r from-blue-500/20 to-purple-500/20 dark:from-blue-600/30 dark:to-purple-600/30 border border-blue-400/30 dark:border-blue-500/30 text-sm font-medium text-gray-700 dark:text-gray-200 backdrop-blur-sm"
+              className="px-4 py-2 rounded-lg bg-blue-100/80 dark:bg-blue-900/30 border border-blue-400/30 dark:border-blue-500/30 text-sm font-medium text-gray-700 dark:text-gray-200 backdrop-blur-sm"
             >
               {tech}
             </motion.div>
@@ -170,7 +170,7 @@ const Hero = () => {
             href="#projects"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 group"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 group"
           >
             View My Work
             <motion.div

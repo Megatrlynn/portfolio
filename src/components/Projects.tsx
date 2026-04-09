@@ -135,18 +135,18 @@ const Projects = () => {
   return (
     <section id="projects" className="relative py-20 md:py-32 overflow-hidden" aria-labelledby="projects-heading" ref={projectsRef}>
       {/* Background */}
-      <div className="absolute inset-0 bg-linear-to-br from-white via-purple-50/20 to-blue-50/20 dark:from-gray-950 dark:via-purple-950/10 dark:to-blue-950/10"></div>
+      <div className="absolute inset-0 bg-white dark:bg-gray-950"></div>
 
       {/* Animated Background Elements */}
       <motion.div
-        className="absolute top-20 left-10 w-72 h-72 bg-linear-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl dark:from-blue-600/10 dark:to-purple-600/10"
+        className="absolute top-20 left-10 w-72 h-72 bg-blue-400/15 rounded-full blur-3xl dark:bg-blue-600/10"
         animate={!prefersReduced && projectsInView ? { x: [0, 30, 0], y: [0, -30, 0] } : { x: 0, y: 0 }}
         transition={!prefersReduced && projectsInView ? { duration: 10, repeat: Infinity, ease: "easeInOut" } : { duration: 0 }}
         aria-hidden="true"
       ></motion.div>
 
       <motion.div
-        className="absolute bottom-20 right-10 w-72 h-72 bg-linear-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl dark:from-purple-600/10 dark:to-pink-600/10"
+        className="absolute bottom-20 right-10 w-72 h-72 bg-purple-400/15 rounded-full blur-3xl dark:bg-purple-600/10"
         animate={!prefersReduced && projectsInView ? { x: [0, -30, 0], y: [0, 30, 0] } : { x: 0, y: 0 }}
         transition={!prefersReduced && projectsInView ? { duration: 10, repeat: Infinity, ease: "easeInOut" } : { duration: 0 }}
         aria-hidden="true"
@@ -162,12 +162,12 @@ const Projects = () => {
           className="text-center mb-16"
         >
           <h2 id="projects-heading" className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
-            <span className="block bg-linear-to-r from-gray-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+            <span className="block text-gray-900 dark:text-white">
               Featured Projects
             </span>
           </h2>
           <motion.div
-            className="h-1 bg-linear-to-r from-blue-600 via-purple-600 to-pink-600 w-24 mx-auto rounded-full"
+            className="h-1 bg-blue-600 w-24 mx-auto rounded-full"
             initial={{ width: 0 }}
             whileInView={{ width: 96 }}
             viewport={{ once: true }}
@@ -252,7 +252,7 @@ const Projects = () => {
                     className="group/image mb-4 block w-full overflow-hidden rounded-[1.75rem] border border-gray-200/70 bg-white/70 p-1 text-left shadow-sm transition-all duration-300 hover:border-blue-300 hover:shadow-xl dark:border-gray-700/70 dark:bg-gray-900/40 dark:hover:border-blue-500 cursor-pointer"
                     aria-label={`Open larger preview for ${project.title}`}
                   >
-                    <div className="relative h-40 overflow-hidden rounded-[1.35rem] bg-linear-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30">
+                    <div className="relative h-40 overflow-hidden rounded-[1.35rem] bg-blue-100 dark:bg-blue-900/30">
                       {project.imageUrl ? (
                         <img
                           src={project.imageUrl}
@@ -262,7 +262,7 @@ const Projects = () => {
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-4xl opacity-40">🚀</div>
                       )}
-                      <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover/image:opacity-100" />
+                      <div className="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300 group-hover/image:opacity-100" />
                       <div className="absolute bottom-3 right-3 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold tracking-wide text-gray-700 shadow-md backdrop-blur-sm dark:bg-gray-950/80 dark:text-gray-100">
                         Click to expand
                       </div>
@@ -316,7 +316,7 @@ const Projects = () => {
                           whileInView={{ opacity: 1, scale: 1 }}
                           viewport={{ once: true }}
                           transition={{ duration: 0.3 }}
-                          className="px-3 py-1.5 text-xs font-medium rounded-lg bg-linear-to-r from-blue-50 to-purple-50 dark:from-blue-900/30 dark:to-purple-900/30 text-gray-700 dark:text-gray-300 border border-blue-200/50 dark:border-blue-700/50 group-hover:border-blue-400 dark:group-hover:border-blue-500 transition-all duration-300"
+                          className="px-3 py-1.5 text-xs font-medium rounded-lg bg-blue-50 dark:bg-blue-900/30 text-gray-700 dark:text-gray-300 border border-blue-200/50 dark:border-blue-700/50 group-hover:border-blue-400 dark:group-hover:border-blue-500 transition-all duration-300"
                         >
                           {techItem}
                         </motion.span>
@@ -340,7 +340,7 @@ const Projects = () => {
                       rel="noopener noreferrer"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold text-sm transition-all duration-300"
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-all duration-300"
                     >
                       <FiExternalLink className="w-4 h-4" />
                       View
@@ -446,7 +446,7 @@ const Projects = () => {
                       {selectedProject.tech.map((item) => (
                         <span
                           key={`stack-${selectedProject.id}-${item}`}
-                          className="px-3 py-1.5 text-xs font-medium rounded-lg bg-linear-to-r from-blue-50 to-purple-50 dark:from-blue-900/30 dark:to-purple-900/30 text-gray-700 dark:text-gray-300 border border-blue-200/50 dark:border-blue-700/50"
+                          className="px-3 py-1.5 text-xs font-medium rounded-lg bg-blue-50 dark:bg-blue-900/30 text-gray-700 dark:text-gray-300 border border-blue-200/50 dark:border-blue-700/50"
                         >
                           {item}
                         </span>
@@ -492,7 +492,7 @@ const Projects = () => {
                       href={selectedProject.demoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-linear-to-r from-blue-600 to-purple-600 text-white font-semibold text-sm hover:from-blue-700 hover:to-purple-700 transition"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition"
                     >
                       <FiExternalLink className="w-4 h-4" />
                       View Demo

@@ -12,10 +12,10 @@ const Footer = () => {
   };
 
   const socialLinks = [
-    { icon: FiGithub, label: 'GitHub', href: 'https://github.com/Megatrlynn', color: 'from-gray-600 to-gray-800' },
-    { icon: FiLinkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/in/raymond-igabineza-7564a9187/', color: 'from-blue-600 to-blue-800' },
-    { icon: FiTwitter, label: 'Twitter', href: 'https://x.com/megatrlynn', color: 'from-cyan-500 to-blue-600' },
-    { icon: FiMail, label: 'Email', href: 'https://mail.google.com/mail/?view=cm&fs=1&to=lynnslyna@gmail.com', color: 'from-orange-500 to-red-600' },
+    { icon: FiGithub, label: 'GitHub', href: 'https://github.com/Megatrlynn', color: 'bg-gray-700' },
+    { icon: FiLinkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/in/raymond-igabineza-7564a9187/', color: 'bg-blue-600' },
+    { icon: FiTwitter, label: 'Twitter', href: 'https://x.com/megatrlynn', color: 'bg-cyan-500' },
+    { icon: FiMail, label: 'Email', href: 'https://mail.google.com/mail/?view=cm&fs=1&to=lynnslyna@gmail.com', color: 'bg-orange-500' },
   ];
 
   const quickLinks = [
@@ -61,17 +61,17 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative py-20 overflow-hidden border-t border-gray-200/50 dark:border-gray-700/50 bg-linear-to-b from-white via-blue-50/10 to-purple-50/20 dark:from-gray-950 dark:via-blue-950/5 dark:to-purple-950/10" ref={footerRef}>
+    <footer className="relative py-20 overflow-hidden border-t border-gray-200/50 dark:border-gray-700/50 bg-white dark:bg-gray-950" ref={footerRef}>
       {/* Animated Background Elements */}
       <motion.div
-        className="absolute top-0 left-20 w-96 h-96 bg-linear-to-br from-blue-300/10 to-purple-300/10 rounded-full blur-3xl dark:from-blue-600/5 dark:to-purple-600/5"
+        className="absolute top-0 left-20 w-96 h-96 bg-blue-300/10 rounded-full blur-3xl dark:bg-blue-600/5"
         animate={!prefersReduced && footerInView ? { x: [0, 30, 0], y: [0, -20, 0] } : { x: 0, y: 0 }}
         transition={!prefersReduced && footerInView ? { duration: 10, repeat: Infinity, ease: "easeInOut" } : { duration: 0 }}
         aria-hidden="true"
       ></motion.div>
 
       <motion.div
-        className="absolute bottom-0 right-20 w-96 h-96 bg-linear-to-br from-purple-300/10 to-pink-300/10 rounded-full blur-3xl dark:from-purple-600/5 dark:to-pink-600/5"
+        className="absolute bottom-0 right-20 w-96 h-96 bg-purple-300/10 rounded-full blur-3xl dark:bg-purple-600/5"
         animate={!prefersReduced && footerInView ? { x: [0, -30, 0], y: [0, 20, 0] } : { x: 0, y: 0 }}
         transition={!prefersReduced && footerInView ? { duration: 12, repeat: Infinity, ease: "easeInOut" } : { duration: 0 }}
         aria-hidden="true"
@@ -88,7 +88,7 @@ const Footer = () => {
         >
           {/* Brand Section */}
           <motion.div variants={itemVariants} className="lg:col-span-1">
-            <h3 className="text-xl font-black bg-linear-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent mb-3">
+            <h3 className="text-xl font-black text-blue-600 dark:text-blue-400 mb-3">
               TitanForge
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -166,7 +166,7 @@ const Footer = () => {
                     className="group relative"
                   >
                     <div
-                      className={`w-10 h-10 rounded-lg bg-linear-to-br ${social.color} flex items-center justify-center text-white shadow-md group-hover:shadow-lg transition-all duration-300`}
+                      className={`w-10 h-10 rounded-lg ${social.color} flex items-center justify-center text-white shadow-md group-hover:shadow-lg transition-all duration-300`}
                     >
                       <Icon className="w-4 h-4" />
                     </div>
@@ -179,7 +179,7 @@ const Footer = () => {
 
         {/* Divider */}
         <motion.div
-          className="h-px bg-linear-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent mb-8"
+          className="h-px bg-gray-200 dark:bg-gray-700 mb-8"
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true }}
@@ -200,7 +200,7 @@ const Footer = () => {
             className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2"
           >
             © {new Date().getFullYear()} Personal Portfolio. Developed by
-            <span className="font-semibold bg-linear-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">Raymond IGABINEZA</span>.
+            <span className="font-semibold text-blue-600 dark:text-blue-400">Raymond IGABINEZA</span>.
             All rights reserved.
           </motion.p>
 
@@ -210,7 +210,7 @@ const Footer = () => {
             onClick={scrollToTop}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
-            className="group flex items-center gap-2 px-4 py-2 rounded-lg bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-sm font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+            className="group flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium shadow-lg hover:shadow-xl transition-all duration-300"
           >
             Back to Top
             <motion.div
