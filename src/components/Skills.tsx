@@ -1,55 +1,98 @@
 import { motion } from 'framer-motion';
 import { FiCode, FiCpu, FiDatabase, FiShield } from 'react-icons/fi';
+import type { ComponentType } from 'react';
 import { useInView } from '../hooks/useInView';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 
 interface Skill {
   name: string;
-  level: number;
-  related: string[];
+  expertise: 'Expert' | 'Advanced' | 'Strong';
+  highlights: string[];
+  tools: string[];
 }
 
 interface SkillCategory {
   title: string;
-  icon: React.ComponentType<{ className?: string }>;
+  summary: string;
+  icon: ComponentType<{ className?: string }>;
   skills: Skill[];
 }
 
 const skillCategories: SkillCategory[] = [
   {
     title: 'Frontend Development',
+    summary: 'Designing polished interfaces and scalable component architectures for production-grade web apps.',
     icon: FiCode,
     skills: [
-      { name: 'React', level: 95, related: ['TypeScript', 'Tailwind CSS', 'Framer Motion'] },
-      { name: 'TypeScript', level: 92, related: ['Vite', 'ESLint', 'Component Architecture'] },
-      { name: 'Responsive UI Design', level: 90, related: ['Accessibility', 'Mobile-first', 'Design Systems'] },
+      {
+        name: 'Modern React Engineering',
+        expertise: 'Expert',
+        highlights: ['Composable UI systems', 'State-driven interactions', 'Performance-focused rendering'],
+        tools: ['React', 'TypeScript', 'Vite', 'Framer Motion'],
+      },
+      {
+        name: 'Design System Thinking',
+        expertise: 'Advanced',
+        highlights: ['Reusable primitives', 'Visual consistency', 'Accessible component patterns'],
+        tools: ['Tailwind CSS', 'CSS Tokens', 'Responsive Layouts'],
+      },
     ],
   },
   {
     title: 'Embedded Systems & IoT',
+    summary: 'Building reliable hardware-software integrations for smart automation and sensor-driven systems.',
     icon: FiCpu,
     skills: [
-      { name: 'Embedded Systems', level: 94, related: ['ESP32', 'Raspberry Pi', 'Arduino'] },
-      { name: 'C/C++ for Microcontrollers', level: 91, related: ['Sensors', 'Actuators', 'Hardware Debugging'] },
-      { name: 'Python for Automation', level: 89, related: ['Serial Communication', 'Data Logging', 'Scripting'] },
+      {
+        name: 'Microcontroller Programming',
+        expertise: 'Expert',
+        highlights: ['Real-time control logic', 'Sensor integrations', 'Low-level debugging workflows'],
+        tools: ['C/C++', 'ESP32', 'Arduino', 'Raspberry Pi'],
+      },
+      {
+        name: 'Automation & Device Scripting',
+        expertise: 'Advanced',
+        highlights: ['Serial communication pipelines', 'Data logging automation', 'Task orchestration'],
+        tools: ['Python', 'Shell Scripts', 'Telemetry Pipelines'],
+      },
     ],
   },
   {
     title: 'Backend & Data',
+    summary: 'Designing secure data flows and scalable backends aligned with modern product requirements.',
     icon: FiDatabase,
     skills: [
-      { name: 'Firebase', level: 90, related: ['Firestore', 'Authentication', 'Storage'] },
-      { name: 'API & Data Modeling', level: 87, related: ['JSON Structures', 'Validation', 'Collections'] },
-      { name: 'SQL & Data Analysis', level: 86, related: ['NumPy', 'Pandas', 'Query Optimization'] },
+      {
+        name: 'Cloud-Backed Application Services',
+        expertise: 'Advanced',
+        highlights: ['Realtime data modeling', 'Authentication flows', 'Production-ready Firebase integration'],
+        tools: ['Firebase', 'Firestore', 'Cloud Storage', 'Access Rules'],
+      },
+      {
+        name: 'Data Architecture & APIs',
+        expertise: 'Strong',
+        highlights: ['Structured payload design', 'Validation strategies', 'Query efficiency'],
+        tools: ['REST Patterns', 'SQL', 'Pandas', 'NumPy'],
+      },
     ],
   },
   {
     title: 'Cybersecurity & Networking',
+    summary: 'Applying practical security principles to improve reliability, resilience, and operational safety.',
     icon: FiShield,
     skills: [
-      { name: 'Network Security', level: 88, related: ['Traffic Monitoring', 'Threat Detection', 'Wazuh'] },
-      { name: 'System Hardening', level: 85, related: ['OpenSSL', 'Access Control', 'Best Practices'] },
-      { name: 'Incident Awareness', level: 84, related: ['Risk Analysis', 'Secure Configurations', 'Auditing'] },
+      {
+        name: 'Defensive Security Practices',
+        expertise: 'Advanced',
+        highlights: ['Traffic observation', 'Threat-aware configuration', 'Monitoring-first operations'],
+        tools: ['Wazuh', 'OpenSSL', 'Security Baselines'],
+      },
+      {
+        name: 'Secure Infrastructure Hygiene',
+        expertise: 'Strong',
+        highlights: ['Hardening checklists', 'Access policy discipline', 'Risk-driven remediation'],
+        tools: ['Access Control', 'Audit Workflows', 'Config Reviews'],
+      },
     ],
   },
 ];
@@ -57,6 +100,25 @@ const skillCategories: SkillCategory[] = [
 const Skills = () => {
   const { ref: skillsRef, inView: skillsInView } = useInView({ threshold: 0.2, triggerOnce: false });
   const prefersReduced = useReducedMotion();
+
+  const categoryVariants = {
+    hidden: { opacity: 0, y: 26 },
+    visible: (index: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.65, delay: index * 0.1, ease: 'easeOut' },
+    }),
+  };
+
+  const detailVariants = {
+    hidden: { opacity: 0, y: 16 },
+    visible: (index: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.45, delay: 0.12 + index * 0.08, ease: 'easeOut' },
+    }),
+  };
+
   return (
     <section id="skills" className="relative py-20 md:py-32 overflow-hidden" aria-labelledby="skills-heading" ref={skillsRef}>
       <div className="absolute inset-0 bg-linear-to-br from-white via-blue-50/20 to-purple-50/20 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10" aria-hidden="true"></div>
@@ -85,7 +147,7 @@ const Skills = () => {
         >
           <h2 id="skills-heading" className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
             <span className="block bg-linear-to-r from-gray-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
-              Skills & Proficiency
+              Professional Skills
             </span>
           </h2>
           <motion.div
@@ -97,7 +159,7 @@ const Skills = () => {
             aria-hidden="true"
           ></motion.div>
           <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mt-6 max-w-3xl mx-auto">
-            Core strengths aligned with the technologies highlighted in the hero section, including React, TypeScript, Embedded Systems, and Python.
+            Focused capabilities across software engineering, systems integration, and secure product delivery.
           </p>
         </motion.div>
 
@@ -107,12 +169,19 @@ const Skills = () => {
             return (
               <motion.article
                 key={category.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial="hidden"
+                whileInView="visible"
                 viewport={{ once: true, margin: '-80px' }}
-                transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
+                custom={categoryIndex}
+                variants={categoryVariants}
+                whileHover={prefersReduced ? {} : { y: -6 }}
                 className="group relative rounded-2xl border border-gray-200/60 dark:border-gray-700/60 bg-white/70 dark:bg-gray-800/50 backdrop-blur-sm p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300"
               >
+                <motion.div
+                  className="absolute -inset-px rounded-2xl bg-linear-to-r from-blue-500/0 via-blue-500/0 to-purple-500/0 group-hover:from-blue-500/15 group-hover:via-transparent group-hover:to-purple-500/15 transition-all duration-500 pointer-events-none"
+                  aria-hidden="true"
+                ></motion.div>
+
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 rounded-lg bg-linear-to-r from-blue-600 to-purple-600 text-white flex items-center justify-center">
                     <Icon className="w-5 h-5" />
@@ -120,26 +189,33 @@ const Skills = () => {
                   <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{category.title}</h3>
                 </div>
 
+                <p className="text-sm md:text-base text-gray-700 dark:text-gray-300 leading-relaxed mb-6">{category.summary}</p>
+
                 <div className="space-y-6">
                   {category.skills.map((skill, skillIndex) => (
-                    <div key={skill.name} className="space-y-2">
-                      <div className="flex items-center justify-between">
+                    <motion.div
+                      key={skill.name}
+                      className="space-y-3 rounded-xl border border-gray-200/70 dark:border-gray-700/70 bg-white/70 dark:bg-gray-900/30 p-4"
+                      custom={skillIndex}
+                      variants={detailVariants}
+                    >
+                      <div className="flex items-center justify-between gap-3">
                         <p className="text-sm md:text-base font-semibold text-gray-800 dark:text-gray-100">{skill.name}</p>
-                        <span className="text-sm font-bold text-blue-600 dark:text-blue-400">{skill.level}%</span>
+                        <span className="px-2.5 py-1 rounded-md text-xs font-semibold border border-blue-200/80 text-blue-700 bg-blue-50 dark:border-blue-700/60 dark:text-blue-200 dark:bg-blue-900/30">
+                          {skill.expertise}
+                        </span>
                       </div>
 
-                      <div className="h-3 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          whileInView={{ width: `${skill.level}%` }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.9, delay: 0.15 + skillIndex * 0.08, ease: 'easeOut' }}
-                          className="h-full rounded-full bg-linear-to-r from-blue-600 via-purple-600 to-pink-500"
-                        ></motion.div>
-                      </div>
+                      <ul className="space-y-1.5">
+                        {skill.highlights.map((point) => (
+                          <li key={`${skill.name}-${point}`} className="text-sm text-gray-700 dark:text-gray-300">
+                            {point}
+                          </li>
+                        ))}
+                      </ul>
 
                       <div className="flex flex-wrap gap-2 pt-1">
-                        {skill.related.map((item) => (
+                        {skill.tools.map((item) => (
                           <span
                             key={`${skill.name}-${item}`}
                             className="px-2.5 py-1 rounded-md text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200/70 dark:bg-blue-900/30 dark:text-blue-200 dark:border-blue-700/60"
@@ -148,7 +224,7 @@ const Skills = () => {
                           </span>
                         ))}
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </motion.article>
